@@ -27,6 +27,8 @@ public class Courier {
     @OneToMany(mappedBy = "courier")
     private List<Shipment> shipments;
 
+    @OneToMany(mappedBy = "courier")
+    private List<Location> location;
 }
 
 

@@ -40,10 +40,9 @@ public class User {
     @CreationTimestamp
     private LocalDate createdAt;
 
-    @OneToMany(mappedBy = "senderId")
+    @OneToMany(mappedBy = "customer")
     private List<Shipment> shipments;
 
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "user")
     private List<Feedback> feedbacks;
-
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -18,17 +19,17 @@ public class Feedback {
 
     @OneToOne
     @JoinColumn(name = "shipment_id", nullable = false)
-    private Shipment shipmentId;
+    private Shipment shipment;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User userId;
+    private User user;
 
-    @NotBlank
-    @Max(value = 5)
-    @Min(value = 0)
+    @NotNull
+    @Max(5)
+    @Min(0)
     @Column(name = "rating")
-    private short rating;
+    private Integer rating;
 
     @Column(name = "comment")
     private String comment;
