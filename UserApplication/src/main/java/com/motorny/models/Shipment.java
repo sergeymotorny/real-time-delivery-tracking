@@ -21,8 +21,8 @@ public class Shipment {
     private Long trackingNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sender_id", nullable = false)
-    private User senderId;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User customer;
 
     @Column(name = "receiver_name", nullable = false)
     private String receiverName;
@@ -67,6 +67,10 @@ public class Shipment {
     private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "courier_id")
     private Courier courier;
+
+    @OneToOne(mappedBy = "shipment")
+    private Feedback feedback;
 
 }
