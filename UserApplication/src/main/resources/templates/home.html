@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+</head>
+<body>
+<div class="container my-4">
+    <h2>My orders:</h2>
+
+    <a th:href="@{/shipments/order-courier}" class="btn btn-primary btn-sm mb-3">Create Order</a>
+
+    <div th:switch="${shipments}">
+        <h2 th:case="null">No shipments yet!</h2>
+        <div th:case="*">
+            <h2>Shipments</h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">TrackingNumber</th>
+                    <th scope="col">ReceiverName</th>
+                    <th scope="col">EstimatedDelivery</th>
+                    <th scope="col">ReceiverAddress</th>
+                    <th scope="col">ReceiverPhone</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">DeliveryType</th>
+                    <th scope="col">PaymentMethod</th>
+                    <th scope="col">ShipmentType</th>
+                    <th scope="col">Weight</th>
+                    <th scope="col">CreatedAt</th>
+                    <th scope="col">UpdatedAt</th>
+                    <th scope="col">CreatedAt</th>
+                </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                <tr th:each="shipment : ${shipments}">
+                    <td th:text="${shipment.trackingNumber}"></td>
+                    <td th:text="${shipment.receiverName}"></td>
+                    <td th:text="${shipment.estimatedDelivery}"></td>
+                    <td th:text="${shipment.receiverAddress}"></td>
+                    <td th:text="${shipment.receiverPhone}"></td>
+                    <td th:text="${shipment.description}"></td>
+                    <td th:text="${shipment.status}"></td>
+                    <td th:text="${shipment.deliveryType}"></td>
+                    <td th:text="${shipment.paymentMethod}"></td>
+                    <td th:text="${shipment.shipmentType}"></td>
+                    <td th:text="${shipment.weight}"></td>
+                    <td th:text="${shipment.createdAt}"></td>
+                    <td th:text="${shipment.updatedAt}"></td>
+
+                    <!--                    <td><a th:href="@{/edit/{id}(id=${user.id})}">Edit</a></td>-->
+                    <!--                    <td><a th:href="@{/delete/{id}(id=${user.id})}">Delete</a></td>-->
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
