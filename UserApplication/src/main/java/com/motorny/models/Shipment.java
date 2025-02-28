@@ -5,9 +5,9 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
+import java.util.Random;
 
 @Data
 @Entity
@@ -18,7 +18,8 @@ public class Shipment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "The field trackingNumber cannot be empty")
+    @SequenceGenerator(name = "tracking_seq", sequenceName = "tracking_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tracking_seq")
     @Column(name = "tracking_number", unique = true, nullable = false)
     private Long trackingNumber;
 
@@ -46,6 +47,7 @@ public class Shipment {
     @Column(name = "description")
     private String description;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private ShipmentStatus status;
 
@@ -79,5 +81,11 @@ public class Shipment {
 
     @OneToOne(mappedBy = "shipment")
     private Feedback feedback;
+
+    @PrePersist
+    public void generationTrackingNumber() {
+        this.trackingNumber = 100_000_000 + new Random().nextLong(999_999_999);
+    }
+
 
 }
