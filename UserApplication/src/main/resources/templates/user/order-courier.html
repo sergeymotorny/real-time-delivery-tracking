@@ -13,89 +13,120 @@
 <header th:insert="~{blocks/header :: header}"></header>
 
 <div class="container my-3">
-    <h3>Courier Service</h3>
+    <h3 class="text-center">Courier Service</h3>
     <div class="form-floating mb-3 w-50">
         <form action="#" th:action="@{/shipments/save}" th:object="${shipment}" method="POST">
 
             <div class="form-group">
-                <label for="receiverName">ReceiverName</label>
-                <input type="text" th:field="*{receiverName}" id="receiverName" name="receiverName" placeholder="Enter receiver name" class="form-control mb-4 col-4">
-                <span th:if="${#fields.hasErrors('receiverName')}" th:errors="*{receiverName}" class="text-danger"></span>
+                <b>Information about the sender.</b>
+            </div>
+
+            <div class="mb-3 row my-3">
+                <label for="receiverFullName" class="col-sm-3 col-form-label">Receiver Full Name</label>
+                <div class="col-sm-9">
+                    <input type="text" th:field="*{receiverFullName}" id="receiverFullName" name="receiverFullName"
+                           placeholder="Enter receiver's FullName" class="form-control mb-2">
+                    <span th:if="${#fields.hasErrors('receiverFullName')}" th:errors="*{receiverFullName}"
+                          class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="receiverAddress" class="col-sm-3 col-form-label">Receiver Address</label>
+                <div class="col-sm-9">
+                    <input type="text" th:field="*{receiverAddress}" id="receiverAddress" name="receiverAddress"
+                           placeholder="Enter receiver address" class="form-control mb-2">
+                    <span th:if="${#fields.hasErrors('receiverAddress')}" th:errors="*{receiverAddress}"
+                          class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="receiverPhone" class="col-sm-3 col-form-label">Receiver Phone</label>
+                <div class="col-sm-9">
+                    <input type="text" th:field="*{receiverPhone}" id="receiverPhone" name="receiverPhone"
+                           placeholder="Enter receiver phone" class="form-control mb-2">
+                    <span th:if="${#fields.hasErrors('receiverPhone')}" th:errors="*{receiverPhone}"
+                          class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="description" class="col-sm-3 col-form-label">Description</label>
+                <div class="col-sm-9">
+                    <input type="text" th:field="*{description}" id="description" name="description"
+                           placeholder="Enter description" class="form-control mb-2">
+                    <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"
+                          class="text-danger"></span>
+                </div>
             </div>
 
             <div class="form-group">
-                <label for="estimatedDelivery">EstimatedDelivery</label>
-                <input type="datetime-local"
-                       th:field="*{estimatedDelivery}"
-                       id="estimatedDelivery"
-                       min="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd\'T\'HH:mm')}"
-                       name="estimatedDelivery"
-                       class="form-control mb-4 col-4">
-                <span th:if="${#fields.hasErrors('estimatedDelivery')}" th:errors="*{estimatedDelivery}" class="text-danger"></span>
+                <b>Shipping information.</b>
             </div>
 
-            <div class="form-group">
-                <label for="receiverAddress">ReceiverAddress</label>
-                <input type="text" th:field="*{receiverAddress}" id="receiverAddress" name="receiverName" placeholder="Enter receiver address" class="form-control mb-4 col-4">
-                <span th:if="${#fields.hasErrors('receiverAddress')}" th:errors="*{receiverAddress}" class="text-danger"></span>
+            <div class="mb-2 row my-3">
+                <label for="estimatedDelivery" class="col-sm-3 col-form-label">Estimated Delivery</label>
+                <div class="col-sm-9">
+                    <input type="datetime-local"
+                           th:field="*{estimatedDelivery}"
+                           id="estimatedDelivery"
+                           name="estimatedDelivery"
+                           class="form-control mb-4 col-4">
+                    <span th:if="${#fields.hasErrors('estimatedDelivery')}" th:errors="*{estimatedDelivery}"
+                          class="text-danger"></span>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="receiverPhone">ReceiverPhone</label>
-                <input type="text" th:field="*{receiverPhone}" id="receiverPhone" name="receiverPhone" placeholder="Enter receiver phone" class="form-control mb-4 col-4">
-                <span th:if="${#fields.hasErrors('receiverPhone')}" th:errors="*{receiverPhone}" class="text-danger"></span>
+            <div class="mb-3 row">
+                <label for="deliveryType" class="col-sm-3 col-form-label">Delivery Type</label>
+                <div class="col-sm-9">
+                    <select th:field="*{deliveryType}" id="deliveryType" class="form-select">
+                        <option th:value="STANDARD" th:text="Standard" selected></option>
+                        <option th:value="EXPRESS" th:text="Express"></option>
+                    </select>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="description">Description</label>
-                <input type="text" th:field="*{description}" id="description" name="description" placeholder="Enter description" class="form-control mb-4 col-4">
-                <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger"></span>
+            <div class="mb-3 row my-3">
+                <label for="paymentMethod" class="col-sm-3 col-form-label">Payment Method</label>
+                <div class="col-sm-9">
+                    <select th:field="*{paymentMethod}" id="paymentMethod" class="form-select">
+                        <option th:value="CASH" th:text="Cash" selected></option>
+                        <option th:value="TERMINAL" th:text="Terminal"></option>
+                    </select>
+                </div>
             </div>
 
-            <div class="form-group my-3">
-                <label for="deliveryType">DeliveryType</label>
-                <select th:field="*{deliveryType}" id="deliveryType" class="form-select">
-                    <option th:text=""></option>
-                    <option th:value="STANDARD" th:text="Standard" selected></option>
-                    <option th:value="EXPRESS" th:text="Express"></option>
-                </select>
+            <div class="mb-3 row">
+                <label for="shipmentType" class="col-sm-3 col-form-label">Shipment Type</label>
+                <div class="col-sm-9">
+                    <select th:field="*{shipmentType}" id="shipmentType" class="form-select">
+                        <option th:value="PARCEL" th:text="Parcel"></option>
+                        <option th:value="CARGO" th:text="Cargo"></option>
+                        <option th:value="DOCUMENTS" th:text="Documents" selected></option>
+                        <option th:value="PALLETS" th:text="Pallets"></option>
+                    </select>
+                </div>
             </div>
 
-            <div class="form-group my-3">
-                <label for="paymentMethod">PaymentMethod</label>
-                <select th:field="*{paymentMethod}" id="paymentMethod" class="form-select">
-                    <option th:text=""></option>
-                    <option th:value="CASH" th:text="Cash" selected></option>
-                    <option th:value="TERMINAL" th:text="Terminal"></option>
-                </select>
-            </div>
-
-            <div class="form-group my-3">
-                <label for="shipmentType">ShipmentType</label>
-                <select th:field="*{shipmentType}" id="shipmentType" class="form-select">
-                    <option th:text=""></option>
-                    <option th:value="PARCEL" th:text="Parcel"></option>
-                    <option th:value="CARGO" th:text="Cargo"></option>
-                    <option th:value="DOCUMENTS" th:text="Documents" selected></option>
-                    <option th:value="PALLETS" th:text="Pallets"></option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="weight">Weight</label>
-                <input type="number" step="0.01" th:field="*{weight}" id="weight" name="weight" placeholder="Enter weight" class="form-control mb-4 col-4">
-                <span th:if="${#fields.hasErrors('weight')}" th:errors="*{weight}" class="text-danger"></span>
+            <div class="mb-3 row">
+                <label for="weight" class="col-sm-3 col-form-label">Weight</label>
+                <div class="col-sm-9">
+                    <input type="number" step="0.01" th:field="*{weight}" id="weight" name="weight"
+                           placeholder="Enter weight" class="form-control mb-2">
+                    <span th:if="${#fields.hasErrors('weight')}" th:errors="*{weight}" class="text-danger"></span>
+                </div>
             </div>
 
             <div class="col-md-6">
                 <button type="submit" class="btn btn-primary">Create</button>
             </div>
         </form>
+
     </div>
-
-
-    <div class="form-group">
-        <a th:href="@{/users/home}"> Back to Home</a>
+    <div class="my-3">
+        <a th:href="@{/users/home}" class="btn btn-outline-secondary">Back to Home</a>
     </div>
 </div>
 <div th:insert="~{blocks/footer :: footer}"></div>
