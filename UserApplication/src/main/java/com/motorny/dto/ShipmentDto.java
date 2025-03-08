@@ -12,11 +12,13 @@ import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.Builder;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
+@Data
+@Builder
 public class ShipmentDto {
 
     private Long id;
@@ -42,19 +44,20 @@ public class ShipmentDto {
 
     private ShipmentStatus status;
 
+    @NotNull(message = "Choose the type of delivery!")
     private DeliveryType deliveryType;
 
+    @NotNull(message = "The type of payment must be selected!")
     private ShipmentPaymentMethod paymentMethod;
 
+    @NotNull(message = "The type of shipment must be selected!")
     private ShipmentType shipmentType;
 
     @NotNull(message = "A field with a parcel weight cannot be empty")
     private Double weight;
 
-    @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
     private Courier courier;

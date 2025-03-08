@@ -9,10 +9,14 @@ import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
+@Data
+@Builder
 public class FeedbackDto {
     private Long id;
 
@@ -27,6 +31,5 @@ public class FeedbackDto {
 
     private String comment;
 
-    @CreationTimestamp
     private LocalDateTime createdAt;
 }
