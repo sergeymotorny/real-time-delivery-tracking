@@ -1,7 +1,6 @@
 package com.motorny.controllers;
 
-import com.motorny.models.Shipment;
-import com.motorny.models.ShipmentStatus;
+import com.motorny.dto.ShipmentDto;
 import com.motorny.service.ShipmentService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -13,6 +12,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.security.Principal;
+
+
 @AllArgsConstructor
 @Controller
 @RequestMapping("/shipments")
@@ -20,25 +22,30 @@ public class ShipmentController {
 
     private final ShipmentService shipmentService;
 
-    @GetMapping("/home")
-    public String showHomePage(Model model) {
+    @GetMapping("/orders")
+    public String showShipments(Model model) {
         model.addAttribute("shipments", shipmentService.getAllShipments());
-        return "home";
+        return "/user/orders";
     }
 
     @GetMapping("/order-courier")
-    public String showFormOrderCourier(@ModelAttribute("shipment") Shipment shipment) {
-        return "form_courier";
+    public String showFormShipmentCourier(Model model) {
+        model.addAttribute("shipment", new ShipmentDto());
+        return "/user/order-courier";
     }
 
     @PostMapping("/save")
-    public String createOrder(@Valid @ModelAttribute("shipment") Shipment shipment, BindingResult result, Model model) {
-        if (result.hasErrors())
-            return "form_courier";
+    public String createShipment(@Valid @ModelAttribute("shipment") ShipmentDto shipmentDto, BindingResult result,
+                                 Principal principal, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("shipment", shipmentDto);
+            return "/user/order-courier";
+        }
 
-        shipment.setStatus(ShipmentStatus.CREATED);
-
-        shipmentService.create(shipment);
-        return "redirect:/home";
+        shipmentService.createShipment(shipmentDto, principal);
+        return "redirect:/users/home";
     }
 }
+
+
+

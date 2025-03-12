@@ -1,13 +1,17 @@
 package com.motorny.models;
 
+import com.motorny.models.enums.DeliveryType;
+import com.motorny.models.enums.ShipmentPaymentMethod;
+import com.motorny.models.enums.ShipmentStatus;
+import com.motorny.models.enums.ShipmentType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.generator.EventType;
 
 import java.time.LocalDateTime;
-import java.util.Random;
 
 @Data
 @Entity
@@ -18,32 +22,27 @@ public class Shipment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @SequenceGenerator(name = "tracking_seq", sequenceName = "tracking_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tracking_seq")
-    @Column(name = "tracking_number", unique = true, nullable = false)
+    @Generated(event = EventType.INSERT)
+    @Column(name = "tracking_number",
+            columnDefinition = "serial", unique = true, nullable = false, insertable = false, updatable = false)
     private Long trackingNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User customer;
 
-    @NotEmpty(message = "The name of the sender cannot be empty")
     @Column(name = "receiver_name", nullable = false)
-    private String receiverName;
+    private String receiverFullName;
 
-    @FutureOrPresent(message = "Delivery date cannot be in the past")
     @Column(name = "estimated_delivery", nullable = false)
     private LocalDateTime estimatedDelivery;
 
-    @NotEmpty(message = "The receiverAddress of the sender cannot be empty")
     @Column(name = "receiver_address", nullable = false)
     private String receiverAddress;
 
-    @Pattern(regexp = "")
     @Column(name = "receiver_phone", nullable = false)
     private String receiverPhone;
 
-    @Size(min = 0, max = 255, message = "The description should be no more than 255 characters")
     @Column(name = "description")
     private String description;
 
@@ -63,29 +62,18 @@ public class Shipment {
     @Column(name = "shipment_type", nullable = false)
     private ShipmentType shipmentType;
 
-    @NotNull(message = "A field with a parcel weight cannot be empty")
     @Column(name = "weight", nullable = false)
     private Double weight;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
-    private LocalDateTime createdAt; // Delete in HTML and make automatic
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     @UpdateTimestamp
-    private LocalDateTime updatedAt; // Delete in HTML and make automatic
+    private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "courier_id")
     private Courier courier;
-
-    @OneToOne(mappedBy = "shipment")
-    private Feedback feedback;
-
-    @PrePersist
-    public void generationTrackingNumber() {
-        this.trackingNumber = 100_000_000 + new Random().nextLong(999_999_999);
-    }
-
-
 }
