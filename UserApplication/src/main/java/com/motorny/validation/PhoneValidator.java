@@ -13,10 +13,12 @@ public class PhoneValidator implements ConstraintValidator<ValidPhone, String> {
 
     @Override
     public boolean isValid(String phone, ConstraintValidatorContext context) {
-        return validateEmail(phone);
+        if (phone == null)
+            return false;
+        return validatePhone(phone);
     }
 
-    private boolean validateEmail(String phone) {
+    private boolean validatePhone(String phone) {
         Matcher matcher = PATTERN.matcher(phone);
         return matcher.matches();
     }
