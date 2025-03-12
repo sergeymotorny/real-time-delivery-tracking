@@ -1,5 +1,6 @@
-package com.motorny.dto;
+package com.motorny.dto.user;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -11,11 +12,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleDto {
+public class UserAuthDto {
 
-    private Long id;
+    @Email
+    private String email;
 
-    @NotBlank
-    @Size(max = 30)
-    private String name;
+    @NotBlank(message = "A password field cannot be empty")
+    @Size(min = 6, max = 120)
+    private String password;
 }

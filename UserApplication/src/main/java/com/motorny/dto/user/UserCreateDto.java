@@ -1,9 +1,9 @@
-package com.motorny.dto;
+package com.motorny.dto.user;
 
+import com.motorny.validation.ValidPassword;
 import com.motorny.validation.ValidPhone;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,9 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
-
-    private Long id;
+public class UserCreateDto {
 
     @NotBlank(message = "The name cannot be empty")
     @Size(max = 50)
@@ -26,11 +24,13 @@ public class UserDto {
     @Size(max = 50)
     private String lastName;
 
-    @NotNull(message = "Phone number cannot be null")
     @ValidPhone
     private String phone;
 
-    @Email(message = "Incorrect mail format!")
+    @Email
     private String email;
-}
 
+    @NotBlank(message = "A password field cannot be empty")
+    @Size(min = 6, max = 120)
+    private String password;
+}

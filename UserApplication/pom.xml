@@ -35,6 +35,7 @@
         <projectlombok.version>1.18.36</projectlombok.version>
         <postgresql.version>42.7.5</postgresql.version>
         <mapstruct.version>1.6.3</mapstruct.version>
+        <mapstruct-processor.version>1.6.3</mapstruct-processor.version>
     </properties>
 
     <dependencies>
@@ -78,6 +79,12 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${mapstruct.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>${mapstruct-processor.version}</version>
         </dependency>
 
         <!--   Database dependencies    -->
@@ -138,5 +145,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

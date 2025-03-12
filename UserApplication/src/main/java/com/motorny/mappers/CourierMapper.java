@@ -8,5 +8,5 @@ import org.mapstruct.Mapper;
 public interface CourierMapper {
     CourierDto toCourierDto(Courier courier);
 
-    CourierDto toCourier(CourierDto courierDto);
+    Courier toCourier(CourierDto courierDto);
 }
