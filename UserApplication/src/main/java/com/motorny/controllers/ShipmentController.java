@@ -1,11 +1,9 @@
 package com.motorny.controllers;
 
-import com.motorny.models.Shipment;
-import com.motorny.models.enums.ShipmentStatus;
+import com.motorny.dto.ShipmentDto;
 import com.motorny.service.ShipmentService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,26 +23,29 @@ public class ShipmentController {
     private final ShipmentService shipmentService;
 
     @GetMapping("/orders")
-    public String showOrders(Model model) {
+    public String showShipments(Model model) {
         model.addAttribute("shipments", shipmentService.getAllShipments());
         return "/user/orders";
     }
 
-
     @GetMapping("/order-courier")
-    public String showFormOrderCourier(@ModelAttribute("shipment") Shipment shipment) {
+    public String showFormShipmentCourier(Model model) {
+        model.addAttribute("shipment", new ShipmentDto());
         return "/user/order-courier";
     }
 
     @PostMapping("/save")
-    public String createOrder(@Valid @ModelAttribute("shipment") Shipment shipment, Principal principal,
-                              BindingResult result, Model model) {
-        if (result.hasErrors())
+    public String createShipment(@Valid @ModelAttribute("shipment") ShipmentDto shipmentDto, BindingResult result,
+                                 Principal principal, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("shipment", shipmentDto);
             return "/user/order-courier";
+        }
 
-
-        shipmentService.createShipment(shipment, principal);
-        System.out.println("redirect");
+        shipmentService.createShipment(shipmentDto, principal);
         return "redirect:/users/home";
     }
 }
+
+
+
