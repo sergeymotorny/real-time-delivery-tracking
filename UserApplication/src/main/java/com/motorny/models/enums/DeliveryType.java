@@ -1,4 +1,4 @@
-package com.motorny.models;
+package com.motorny.models.enums;
 
 public enum DeliveryType {
     STANDARD, EXPRESS
