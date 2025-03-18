@@ -13,7 +13,7 @@
 
 <div class="container text-center col-8">
     <h2 class="text-success">My orders</h2>
-    <div th:switch="${shipments}">
+    <div th:switch="${orders}">
         <h3 th:case="null">No shipments yet!</h3>
         <div th:case="*">
             <div class="table-responsive">
@@ -29,27 +29,23 @@
                         <th scope="col">Status</th>
                         <th scope="col">DeliveryType</th>
                         <th scope="col">PaymentMethod</th>
-                        <th scope="col">ShipmentType</th>
+                        <th scope="col">OrderType</th>
                         <th scope="col">Weight</th>
-                        <th scope="col">CreatedAt</th>
-                        <th scope="col">UpdatedAt</th>
                     </tr>
                     </thead>
                     <tbody class="table-group-divider">
-                    <tr th:each="shipment : ${shipments}" >
-                        <td th:text="${shipment.trackingNumber}"></td>
-                        <td th:text="${shipment.receiverFullName}"></td>
-                        <td th:text="${shipment.estimatedDelivery}"></td>
-                        <td th:text="${shipment.receiverAddress}"></td>
-                        <td th:text="${shipment.receiverPhone}"></td>
-                        <td th:text="${shipment.description}"></td>
-                        <td th:text="${shipment.status}"></td>
-                        <td th:text="${shipment.deliveryType}"></td>
-                        <td th:text="${shipment.paymentMethod}"></td>
-                        <td th:text="${shipment.shipmentType}"></td>
-                        <td th:text="${shipment.weight}"></td>
-                        <td th:text="${shipment.createdAt}"></td>
-                        <td th:text="${shipment.updatedAt}"></td>
+                    <tr th:each="order : ${orders}" >
+                        <td th:text="${order.shipment != null ? order.shipment.trackingNumber : 'waiting'}"></td>
+                        <td th:text="${order.receiverFullName}"></td>
+                        <td th:text="${order.estimatedDelivery}"></td>
+                        <td th:text="${order.receiverAddress}"></td>
+                        <td th:text="${order.receiverPhone}"></td>
+                        <td th:text="${order.description}"></td>
+                        <td th:text="${order.shipment != null ? order.shipment.status : 'waiting'}"></td>
+                        <td th:text="${order.deliveryType}"></td>
+                        <td th:text="${order.paymentMethod}"></td>
+                        <td th:text="${order.orderType}"></td>
+                        <td th:text="${order.weight}"></td>
                     </tr>
                     </tbody>
                 </table>
