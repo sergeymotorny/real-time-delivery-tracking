@@ -1,12 +1,12 @@
 package com.motorny.service;
 
-import com.motorny.models.Shipment;
+import com.motorny.dto.ShipmentDto;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.security.Principal;
 import java.util.List;
 
 public interface ShipmentService {
-    List<Shipment> getAllShipments();
-    void createShipment(Shipment shipment, Principal principal);
-    Shipment getById(Long id);
+    List<ShipmentDto> getAllShipments();
+    ShipmentDto createShipmentForOrder(ShipmentDto shipmentDto, Long orderId, UserDetails userDetails);
+    ShipmentDto getById(Long id);
 }

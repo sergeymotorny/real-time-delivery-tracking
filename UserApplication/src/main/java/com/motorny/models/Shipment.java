@@ -1,11 +1,11 @@
 package com.motorny.models;
 
-import com.motorny.models.enums.DeliveryType;
-import com.motorny.models.enums.ShipmentPaymentMethod;
 import com.motorny.models.enums.ShipmentStatus;
-import com.motorny.models.enums.ShipmentType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -13,7 +13,10 @@ import org.hibernate.generator.EventType;
 
 import java.time.LocalDateTime;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
+@Builder
 @Entity
 @Table(name = "shipments")
 public class Shipment {
@@ -27,43 +30,17 @@ public class Shipment {
             columnDefinition = "serial", unique = true, nullable = false, insertable = false, updatable = false)
     private Long trackingNumber;
 
+    @OneToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User customer;
-
-    @Column(name = "receiver_name", nullable = false)
-    private String receiverFullName;
-
-    @Column(name = "estimated_delivery", nullable = false)
-    private LocalDateTime estimatedDelivery;
-
-    @Column(name = "receiver_address", nullable = false)
-    private String receiverAddress;
-
-    @Column(name = "receiver_phone", nullable = false)
-    private String receiverPhone;
-
-    @Column(name = "description")
-    private String description;
+    @JoinColumn(name = "courier_id")
+    private Courier courier;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private ShipmentStatus status;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "delivery_type", nullable = false)
-    private DeliveryType deliveryType;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "payment_method", nullable = false)
-    private ShipmentPaymentMethod paymentMethod;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "shipment_type", nullable = false)
-    private ShipmentType shipmentType;
-
-    @Column(name = "weight", nullable = false)
-    private Double weight;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
@@ -72,8 +49,4 @@ public class Shipment {
     @Column(name = "updated_at")
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "courier_id")
-    private Courier courier;
 }
