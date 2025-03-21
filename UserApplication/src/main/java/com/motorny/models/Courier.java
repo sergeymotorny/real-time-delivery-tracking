@@ -1,11 +1,15 @@
 package com.motorny.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-
-import java.util.List;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "couriers")
 public class Courier {
@@ -13,12 +17,6 @@ public class Courier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @OneToMany(mappedBy = "courier")
-    private List<Shipment> shipments;
-
-    @OneToMany(mappedBy = "courier")
-    private List<Location> location;
 }
 
 
