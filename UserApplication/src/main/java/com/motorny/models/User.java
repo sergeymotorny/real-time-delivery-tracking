@@ -2,15 +2,18 @@ package com.motorny.models;
 
 import com.motorny.models.enums.Status;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
 @Entity
 @Table(name = "users")
 public class User {
@@ -28,8 +31,7 @@ public class User {
     @Column(name = "phone", unique = true, nullable = false)
     private String phone;
 
-    @Email
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     private String email;
 
     @Column(name = "password", nullable = false)
@@ -46,11 +48,15 @@ public class User {
     @JoinTable(name = "user_roles",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(mappedBy = "customer")
-    private List<Shipment> shipments;
+    public void addRole(Role role) {
+        this.roles.add(role);
+        role.getUsers().add(this);
+    }
 
-    @OneToMany(mappedBy = "user")
-    private List<Feedback> feedbacks;
+    public void removeRole(Role role) {
+        this.roles.remove(role);
+        role.getUsers().remove(this);
+    }
 }
