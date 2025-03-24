@@ -12,18 +12,22 @@
 
 <div class="d-flex align-items-center justify-content-center vh-100 bg-body-tertiary">
     <main class="form-signin card p-4 shadow-lg" style="width: 400px;">
-        <form th:action="@{/auth/login}" th:object="${user}" method="post">
+        <form th:action="@{/auth/login}" th:object="${userDto}" method="post">
             <!-- image       -->
             <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
             <div class="form-floating">
                 <label for="floatingInput">Email address</label>
-                <input type="email" class="form-control" name="email" id="floatingInput">
+                <input type="email" class="form-control" name="email" id="floatingInput" value="motorny0919@gmail.com">
+                <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+                      class="text-danger"></span>
             </div>
 
             <div class="form-floating my-3">
                 <label for="password">Password</label>
-                <input type="password" class="form-control" name="password" id="password">
+                <input type="password" class="form-control" name="password" id="password" value="123456">
+                <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+                      class="text-danger"></span>
             </div>
 
             <div class="form-check text-start my-3">
