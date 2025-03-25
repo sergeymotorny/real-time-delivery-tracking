@@ -27,7 +27,8 @@ public class UserCreateDto {
     @ValidPhone
     private String phone;
 
-    @Email
+    @NotBlank(message = "Email cannot be blank")
+    @Email(message = "Incorrect mail format!")
     private String email;
 
     @NotBlank(message = "A password field cannot be empty")
