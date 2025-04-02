@@ -30,14 +30,15 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/auth/login", "/auth/register").permitAll()
-                        .requestMatchers("/users/**").hasRole("CLIENT")
-                        .requestMatchers("/adm/**").hasRole("ADMIN")
+                        .requestMatchers("/users/**").hasAnyRole("CLIENT", "COURIER", "ADMIN")
+                        .requestMatchers("/couriers/**").hasAnyRole("COURIER", "ADMIN")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/auth/login")
                         .usernameParameter("email")
                         .passwordParameter("password")
-                        .defaultSuccessUrl("/users/home", true)
+                        .defaultSuccessUrl("/home", true)
                         .failureUrl("/auth/login?error=true")
                         .permitAll())
                 .logout(logout -> logout

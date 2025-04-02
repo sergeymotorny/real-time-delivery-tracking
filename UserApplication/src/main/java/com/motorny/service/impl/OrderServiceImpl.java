@@ -1,6 +1,9 @@
 package com.motorny.service.impl;
 
 import com.motorny.dto.OrderDto;
+import com.motorny.dto.admin.AdminOrderDto;
+import com.motorny.dto.courier.CourierOrderDto;
+import com.motorny.exceptions.OrderNotFoundException;
 import com.motorny.mappers.OrderMapper;
 import com.motorny.models.Order;
 import com.motorny.models.User;
@@ -14,8 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.motorny.models.enums.OrderStatus.CREATED;
-
 @AllArgsConstructor
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -27,9 +28,9 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public List<OrderDto> getAllOrders() {
+    public List<AdminOrderDto> getAllOrders() {
         return orderRepository.findAll().stream()
-                .map(orderMapper::toOrderDto)
+                .map(orderMapper::toAdminOrderDto)
                 .toList();
     }
 
@@ -44,6 +45,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public CourierOrderDto getOrderById(Long id) {
+        return orderRepository.findById(id)
+                .map(orderMapper::toCourierOrderDto)
+                .orElseThrow(() -> new OrderNotFoundException("Order not found with id '" + id + "'"));
+    }
+
+    @Override
     public OrderDto createOrder(OrderDto orderDto, UserDetails userDetails) {
 
         String userByEmail = userDetails.getUsername();
@@ -53,7 +61,6 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = orderMapper.toOrder(orderDto);
         order.setCustomer(foundUser);
-        order.setStatus(CREATED);
 
         Order savedOrder = orderRepository.save(order);
 

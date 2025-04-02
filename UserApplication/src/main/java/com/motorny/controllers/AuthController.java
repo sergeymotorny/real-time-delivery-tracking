@@ -1,6 +1,7 @@
 package com.motorny.controllers;
 
-import com.motorny.models.User;
+import com.motorny.dto.user.UserAuthDto;
+import com.motorny.dto.user.UserCreateDto;
 import com.motorny.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -18,21 +19,22 @@ public class AuthController {
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
-        model.addAttribute("user", new User());
+        model.addAttribute("userCreateDto", new UserCreateDto());
         return "auth/register";
     }
 
     @PostMapping("/register")
-    public String registerUser(@Valid @ModelAttribute User user, BindingResult result) {
+    public String registerUser(@Valid @ModelAttribute("userCreateDto") UserCreateDto userCreateDto, BindingResult result) {
         if (result.hasErrors())
             return "auth/register";
 
-        userService.createUser(user);
+        userService.createUser(userCreateDto);
         return "redirect:/auth/login";
     }
 
     @GetMapping("/login")
-    public String showLoginForm(@Valid @ModelAttribute("user") User user) {
+    public String showLoginForm(Model model) {
+        model.addAttribute("userDto", new UserAuthDto());
         return "auth/login";
     }
 
@@ -41,7 +43,7 @@ public class AuthController {
         if (result.hasErrors())
             return "auth/login";
 
-        userService.findByEmail(email);
+        userService.getUserByEmail(email);
         return "redirect:/user/profile";
     }
 }

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>CourierOrders</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+</head>
+<body>
+<header th:insert="~{blocks/header :: header}"></header>
+
+<div class="container my-5">
+
+    <div class="my-3 p-3 bg-body rounded shadow-sm">
+
+        <h6 class="border-bottom pb-2 mb-0">Full information about the order</h6>
+
+        <div class="d-flex text-body-secondary pt-3">
+            <div class="pb-3 mb-0 small lh-sm border-bottom w-100">
+                <p class="text-gray-dark" th:text="${order.shipment != null ? order.shipment.trackingNumber : 'waiting'}"></p>
+                <p th:text="${order.receiverFullName}"></p>
+                <p th:text="${order.estimatedDelivery}"></p>
+                <p th:text="${order.receiverAddress}"></p>
+                <p th:text="${order.receiverPhone}"></p>
+                <p th:text="${order.description}"></p>
+                <p th:text="${order.shipment != null ? order.shipment.status : 'waiting'}"></p>
+                <p th:text="${order.deliveryType}"></p>
+                <p th:text="${order.paymentMethod}"></p>
+                <p th:text="${order.orderType}"></p>
+                <p th:text="${order.weight}"></p>
+            </div>
+        </div>
+        <small class="d-block text-end mt-3">
+            <a href="#">Complain to order</a>
+        </small>
+    </div>
+</div>
+
+<div th:insert="~{blocks/footer :: footer}"></div>
+</body>
+</html>

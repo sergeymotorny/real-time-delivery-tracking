@@ -30,6 +30,7 @@ public class UserDto {
     @ValidPhone
     private String phone;
 
+    @NotBlank(message = "Email cannot be blank")
     @Email(message = "Incorrect mail format!")
     private String email;
 }

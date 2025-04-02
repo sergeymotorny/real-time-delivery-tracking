@@ -21,22 +21,10 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @GetMapping("/admin")
-    public String getAllOrdersForAdmin(Model model) {
-        model.addAttribute("orders", orderService.getAllOrders());
-        return "adm/orders";
-    }
-
-    @GetMapping
-    public String getAllOrdersByUser(Model model, @AuthenticationPrincipal UserDetails userDetails) {
-        model.addAttribute("orders", orderService.getOrdersByUser(userDetails.getUsername()));
-        return "user/orders";
-    }
-
     @GetMapping("/courier/form")
     public String showFormCourierOrder(Model model) {
         model.addAttribute("order", new OrderDto());
-        return "user/order-courier";
+        return "user/create-order";
     }
 
     @PostMapping("/create")
@@ -46,10 +34,10 @@ public class OrderController {
                               Model model) {
         if (result.hasErrors()) {
             model.addAttribute("order", orderDto);
-            return "user/order-courier";
+            return "user/create-order";
         }
 
         orderService.createOrder(orderDto, userDetails);
-        return "redirect:/users/home";
+        return "redirect:/home";
     }
 }

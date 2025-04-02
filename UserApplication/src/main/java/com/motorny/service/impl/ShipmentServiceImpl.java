@@ -8,19 +8,25 @@ import com.motorny.mappers.ShipmentMapper;
 import com.motorny.models.Courier;
 import com.motorny.models.Order;
 import com.motorny.models.Shipment;
+import com.motorny.models.User;
 import com.motorny.repositories.CourierRepository;
 import com.motorny.repositories.OrderRepository;
 import com.motorny.repositories.ShipmentRepository;
+import com.motorny.repositories.UserRepository;
 import com.motorny.service.ShipmentService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static com.motorny.models.enums.OrderStatus.CONFIRMED;
 import static com.motorny.models.enums.ShipmentStatus.IN_TRANSIT;
 
+@Slf4j
 @AllArgsConstructor
 @Service
 public class ShipmentServiceImpl implements ShipmentService {
@@ -28,6 +34,7 @@ public class ShipmentServiceImpl implements ShipmentService {
     private final ShipmentRepository shipmentRepository;
     private final OrderRepository orderRepository;
     private final CourierRepository courierRepository;
+    private final UserRepository userRepository;
 
     private final ShipmentMapper shipmentMapper;
 
@@ -38,23 +45,26 @@ public class ShipmentServiceImpl implements ShipmentService {
                 .toList();
     }
 
+    @Transactional
     @Override
     public ShipmentDto createShipmentForOrder(ShipmentDto shipmentDto, Long orderId, UserDetails userDetails) {
 
         String userByEmail = userDetails.getUsername();
-        Courier foundCourier = courierRepository.findByEmail(userByEmail)
-                .orElseThrow(() -> new CourierNotFoundException("User not found with email: " + userByEmail));
 
-        Order foundOrder = orderRepository.findById(orderId)
-                .orElseThrow(() -> new OrderNotFoundException("Order not found: " + orderId));
-
-        foundOrder.setStatus(CONFIRMED);
+        User foundUser = userRepository.findByEmail(userByEmail)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + userByEmail));
+        Courier courier = courierRepository.findByUser(foundUser)
+                .orElseThrow(() -> new CourierNotFoundException("Courier not found with id: " + foundUser.getId()));
 
         Shipment shipment = shipmentMapper.toShipment(shipmentDto);
+        shipment.setCourier(courier);
+
+        Order foundOrder = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException("Order not found with id: " + orderId));
+        foundOrder.setStatus(CONFIRMED);
+
         shipment.setOrder(foundOrder);
         shipment.setStatus(IN_TRANSIT);
-        shipment.setCourier(foundCourier);
-
         Shipment savedShipment = shipmentRepository.save(shipment);
 
         return shipmentMapper.toShipmentDto(savedShipment);

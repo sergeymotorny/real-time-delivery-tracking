@@ -12,11 +12,11 @@
 
     <header th:insert="~{blocks/header :: header}"></header>
 
-    <form th:action="@{/auth/register}" th:object="${user}" method="post">
+    <form th:action="@{/auth/register}" th:object="${userCreateDto}" method="post">
         <div class="row">
             <div class="form-group col-md-8">
                 <label for="firstName" class="col-form-label">FirstName</label>
-                <input type="text" th:field="*{firstName}" class="form-control" id="firstName"
+                <input type="text" th:field="*{firstName}" name="firstName" class="form-control" id="firstName"
                        placeholder="FirstName"
                        required>
                 <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"
@@ -36,6 +36,7 @@
                 <label for="phone" class="col-form-label">Phone</label>
                 <input type="text" th:field="*{phone}" class="form-control" id="phone"
                        placeholder="Phone"
+                       value="+380"
                        required>
                 <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"
                       class="text-danger"></span>
