@@ -69,8 +69,8 @@ public class Order {
     private LocalDateTime updatedAt;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private OrderStatus status = OrderStatus.CREATED;
 
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "order", cascade = CascadeType.REMOVE)
     private Shipment shipment;
 }

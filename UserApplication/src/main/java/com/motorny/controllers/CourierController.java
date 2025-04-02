@@ -35,15 +35,14 @@ public class CourierController {
     @PostMapping("/orders/take")
     public String createShipment(@Valid @ModelAttribute("shipment") ShipmentDto shipment,
                                  BindingResult result,
-                                 @RequestParam("orderId") Long orderId,
+                                 @RequestParam Long orderId,
                                  @AuthenticationPrincipal UserDetails userDetails,
                                  Model model) {
         if (result.hasErrors()) {
-            model.addAttribute("shipment", shipment);
             return "courier/orders";
         }
 
-        model.addAttribute("orders", shipmentService.createShipmentForOrder(shipment, orderId, userDetails));
+        model.addAttribute("shipment", shipmentService.createShipmentForOrder(shipment, orderId, userDetails));
         return "redirect:/couriers/orders";
     }
 }
