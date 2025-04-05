@@ -36,6 +36,7 @@
         <postgresql.version>42.7.5</postgresql.version>
         <mapstruct.version>1.6.3</mapstruct.version>
         <mapstruct-processor.version>1.6.3</mapstruct-processor.version>
+        <google-maps-services.version>2.2.0</google-maps-services.version>
     </properties>
 
     <dependencies>
@@ -98,6 +99,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!--    GoogleMap    -->
+        <dependency>
+            <groupId>com.google.maps</groupId>
+            <artifactId>google-maps-services</artifactId>
+            <version>${google-maps-services.version}</version>
         </dependency>
 
         <!--    Test    -->
