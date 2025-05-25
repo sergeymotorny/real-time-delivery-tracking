@@ -12,4 +12,5 @@ public interface OrderService {
     List<OrderDto> getOrdersByUser(String email);
     CourierOrderDto getOrderById(Long id);
     OrderDto createOrder(OrderDto orderDto, UserDetails userDetails);
+    OrderDto findOrderById(Long id);
 }

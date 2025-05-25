@@ -66,4 +66,11 @@ public class OrderServiceImpl implements OrderService {
 
         return orderMapper.toOrderDto(savedOrder);
     }
+
+    @Override
+    public OrderDto findOrderById(Long id) {
+        return orderRepository.findById(id)
+                .map(orderMapper::toOrderDto)
+                .orElseThrow(() -> new OrderNotFoundException("Order not found with id '" + id + "'"));
+    }
 }
