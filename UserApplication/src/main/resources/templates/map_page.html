@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>WebSocketMap</title>
@@ -36,9 +36,14 @@
     <option value="courier">Курьер</option>
 </select>
 
-<div id="map"></div>
+<div th:if="${order.latitude} == null or ${order.longitude} == null">
+    <p>Курьер еще не принял заказ. Попробуйте позже.</p>
+</div>
 
-<script>
+<!--<div id="map"></div>-->
+<div id="map" th:if="${order.latitude} != null and ${order.longitude} != null" style="height: 500px;"></div>
+
+<script th:inline="none">
 
     let isCourier = false;
 
@@ -114,7 +119,7 @@
 
     function drawRoute(uuid, start, end) {
 
-        const apiKey = '5b3ce3597851110001cf6248a4be1e22e72845cd9352c0187e9d67cd'; //УБРАТЬ ПРИ КОММИТЕ
+        const apiKey = '#'; //УБРАТЬ ПРИ КОММИТЕ
         const url = 'https://api.openrouteservice.org/v2/directions/driving-car';
 
         fetch(url, {
@@ -278,7 +283,25 @@
     };
 
     window.onload = function () {
-        if (navigator.geolocation) {
+        if (!isCourier && orderLat && orderLng) {
+            const currentLocation = [orderLat, orderLng];
+
+            if (!userLocationMarker) {
+                userLocationMarker = L.marker(currentLocation, {icon: defaultIcon})
+                    .addTo(map)
+                    .bindPopup("Пункт назначения клиента")
+                    .openPopup();
+            } else {
+                userLocationMarker.setLatLng(currentLocation);
+            }
+
+            map.setView(currentLocation, 13);
+
+            // Сохраняем координаты клиента
+            // if (!isCourier) { }
+            clientLatLng = currentLocation;
+
+        } else if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(position => {
                 const {latitude, longitude} = position.coords;
                 const currentLocation = [latitude, longitude];
@@ -303,11 +326,59 @@
                 console.error('Ошибка геолокации:', error);
                 alert('Ошибка геолокации: ' + error.message);
             });
+
         } else {
             alert("Геолокация не поддерживается этим браузером.");
         }
     };
 
+
+    // window.onload = function () {
+    //     if (navigator.geolocation) {
+    //         navigator.geolocation.getCurrentPosition(position => {
+    //             const {latitude, longitude} = position.coords;
+    //             const currentLocation = [latitude, longitude];
+    //
+    //             if (!userLocationMarker) {
+    //                 userLocationMarker = L.marker(currentLocation, {icon: defaultIcon})
+    //                     .addTo(map)
+    //                     .bindPopup(isCourier ? "Вы — курьер" : "Вы находитесь здесь")
+    //                     .openPopup();
+    //             } else {
+    //                 userLocationMarker.setLatLng(currentLocation);
+    //             }
+    //
+    //             map.setView(currentLocation, 13);
+    //
+    //             // Сохраняем координаты клиента
+    //             if (!isCourier) {
+    //                 clientLatLng = currentLocation;
+    //             }
+    //
+    //         }, error => {
+    //             console.error('Ошибка геолокации:', error);
+    //             alert('Ошибка геолокации: ' + error.message);
+    //         });
+    //     } else {
+    //         alert("Геолокация не поддерживается этим браузером.");
+    //     }
+    // };
+
 </script>
+
+<script th:inline="javascript" >
+    /*<![CDATA[*/
+    const orderLat = /*[[${order.latitude}]]*/ null;
+    const orderLng = /*[[${order.longitude}]]*/ null;
+
+
+    if (orderLat === null || orderLng === null) {
+        alert('Курьер еще не принял заказ. Попробуйте позже.');
+        // Можно еще перенаправить на другую страницу:
+        // window.location.href = '/some_page';
+    }
+    /*]]>*/
+</script>
+
 </body>
 </html>
