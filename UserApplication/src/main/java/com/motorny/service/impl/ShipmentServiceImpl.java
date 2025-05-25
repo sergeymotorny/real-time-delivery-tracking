@@ -2,6 +2,7 @@ package com.motorny.service.impl;
 
 import com.motorny.dto.ShipmentDto;
 import com.motorny.exceptions.CourierNotFoundException;
+import com.motorny.exceptions.OrderAlreadyTakenException;
 import com.motorny.exceptions.OrderNotFoundException;
 import com.motorny.exceptions.ShipmentNotFoundException;
 import com.motorny.mappers.ShipmentMapper;
@@ -9,6 +10,7 @@ import com.motorny.models.Courier;
 import com.motorny.models.Order;
 import com.motorny.models.Shipment;
 import com.motorny.models.User;
+import com.motorny.models.enums.OrderStatus;
 import com.motorny.repositories.CourierRepository;
 import com.motorny.repositories.OrderRepository;
 import com.motorny.repositories.ShipmentRepository;
@@ -61,6 +63,10 @@ public class ShipmentServiceImpl implements ShipmentService {
 
         Order foundOrder = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException("Order not found with id: " + orderId));
+
+        if (foundOrder.getStatus() != OrderStatus.CREATED) {
+            throw new OrderAlreadyTakenException("Order already taken! Take another order!");
+        }
         foundOrder.setStatus(CONFIRMED);
 
         shipment.setOrder(foundOrder);

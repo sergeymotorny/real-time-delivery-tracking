@@ -44,6 +44,17 @@
             </div>
 
             <div class="mb-3 row">
+                <label for="receiverAddress" class="col-sm-3 col-form-label">Coordinates</label>
+                <div class="col-sm-9">
+                    <input type="hidden" id="latitude" name="latitude" th:field="*{latitude}">
+                    <input type="hidden" id="longitude" name="longitude" th:field="*{longitude}">
+
+                    <button type="button" class="btn btn-primary" onclick="getCoordinates()">Send coordinates for the courier</button>
+                </div>
+            </div>
+
+
+            <div class="mb-3 row">
                 <label for="receiverPhone" class="col-sm-3 col-form-label">Phone</label>
                 <div class="col-sm-9">
                     <input type="text" th:field="*{receiverPhone}" id="receiverPhone" name="receiverPhone"
@@ -155,6 +166,27 @@
     </div>
 </div>
 <div th:insert="~{blocks/footer :: footer}"></div>
+
+<script>
+    function getCoordinates() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    const latitude = position.coords.latitude
+                    const longitude = position.coords.longitude
+
+                    document.getElementById("latitude").value = latitude;
+                    document.getElementById("longitude").value = longitude;
+                },
+                function(error) {
+                    alert("Ошибка геолокации: " + error.message);
+                }
+            );
+        } else {
+            alert("Ваш браузер не поддерживает геолокацию.");
+        }
+    }
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"

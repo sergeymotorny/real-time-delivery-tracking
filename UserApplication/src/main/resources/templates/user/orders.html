@@ -31,6 +31,7 @@
                         <th scope="col">PaymentMethod</th>
                         <th scope="col">OrderType</th>
                         <th scope="col">Weight</th>
+                        <th scope="col">Map</th>
                     </tr>
                     </thead>
                     <tbody class="table-group-divider">
@@ -46,6 +47,9 @@
                         <td th:text="${order.paymentMethod}"></td>
                         <td th:text="${order.orderType}"></td>
                         <td th:text="${order.weight}"></td>
+                        <td>
+                            <a th:href="@{/map/{id}(id=${order.id})}" class="btn btn-sm btn-outline-primary">На карту</a>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
