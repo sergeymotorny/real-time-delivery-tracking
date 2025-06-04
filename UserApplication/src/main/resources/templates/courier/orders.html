@@ -41,6 +41,10 @@
                         <strong class="text-gray-dark">Order #<span th:text="${iterStat.count}"></span></strong>
 
                         <a th:href="@{/couriers/orders/{id}(id=${order.id})}">View details</a>
+
+                        <div>
+                            <a th:href="@{/map/courier/{id}(id=${order.id})}" class="btn btn-sm btn-outline-primary">Hand over your coordinates</a>
+                        </div>
                     </div>
                     <div class="d-block">
                         <span th:text="${order.receiverFullName}"></span>
@@ -53,7 +57,6 @@
                     </div>
                 </div>
             </div>
-
             <small class="d-block text-end mt-3">
                 <a href="#">All suggestions</a>
             </small>

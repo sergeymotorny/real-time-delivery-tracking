@@ -5,6 +5,7 @@ import com.motorny.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,11 +29,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
+
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/auth/login", "/auth/register").permitAll()
+                        .requestMatchers("/map/**").permitAll()
                         .requestMatchers("/users/**").hasAnyRole("CLIENT", "COURIER", "ADMIN")
                         .requestMatchers("/couriers/**").hasAnyRole("COURIER", "ADMIN")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/ws/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/auth/login")
@@ -48,6 +52,10 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+
+
+
 
     @Bean
     public UserDetailsService userDetailsService() {
