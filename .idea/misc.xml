@@ -6,6 +6,7 @@
       <list>
         <option value="$PROJECT_DIR$/UserApplication/pom.xml" />
         <option value="$PROJECT_DIR$/DriverApplication/pom.xml" />
+        <option value="$PROJECT_DIR$/ShipmentTrackingApplication/pom.xml" />
       </list>
     </option>
   </component>
