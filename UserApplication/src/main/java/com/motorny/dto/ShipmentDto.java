@@ -12,4 +12,7 @@ import lombok.NoArgsConstructor;
 public class ShipmentDto {
 
     private Long id;
+
+    private Double courierLatitude;
+    private Double courierLongitude;
 }

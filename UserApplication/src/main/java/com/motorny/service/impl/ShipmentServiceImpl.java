@@ -40,13 +40,6 @@ public class ShipmentServiceImpl implements ShipmentService {
 
     private final ShipmentMapper shipmentMapper;
 
-    @Override
-    public List<ShipmentDto> getAllShipments() {
-        return shipmentRepository.findAll().stream()
-                .map(shipmentMapper::toShipmentDto)
-                .toList();
-    }
-
     @Transactional
     @Override
     public ShipmentDto createShipmentForOrder(ShipmentDto shipmentDto, Long orderId, UserDetails userDetails) {
@@ -60,6 +53,8 @@ public class ShipmentServiceImpl implements ShipmentService {
 
         Shipment shipment = shipmentMapper.toShipment(shipmentDto);
         shipment.setCourier(courier);
+        shipment.setCourierLatitude(46.974429);  //the starting point of the courier
+        shipment.setCourierLongitude(32.019642); //the starting point of the courier
 
         Order foundOrder = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException("Order not found with id: " + orderId));
@@ -77,9 +72,23 @@ public class ShipmentServiceImpl implements ShipmentService {
     }
 
     @Override
+    public List<ShipmentDto> getAllShipments() {
+        return shipmentRepository.findAll().stream()
+                .map(shipmentMapper::toShipmentDto)
+                .toList();
+    }
+
+    @Override
     public ShipmentDto getById(Long id) {
         Shipment shipment = shipmentRepository.findById(id)
                 .orElseThrow(() -> new ShipmentNotFoundException("Shipment not found: " + id));
+        return shipmentMapper.toShipmentDto(shipment);
+    }
+
+    @Override
+    public ShipmentDto findByOrderId(Long orderId) {
+        Shipment shipment = shipmentRepository.findByOrderId(orderId)
+                .orElseThrow(() -> new ShipmentNotFoundException("Shipment not found: " + orderId));
         return shipmentMapper.toShipmentDto(shipment);
     }
 }
