@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
-          integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 </head>
 <body>
 <header th:insert="~{blocks/header :: header}"></header>
@@ -16,16 +17,16 @@
             <!-- image       -->
             <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
-            <div class="form-floating">
-                <label for="floatingInput">Email address</label>
-                <input type="email" class="form-control" name="email" id="floatingInput" value="motorny0919@gmail.com">
+            <div class="col-auto">
+                <label for="email" class="visually-hidden">Email address</label>
+                <input type="email" class="form-control" name="email" id="email" placeholder="Email" value="motorny0919@gmail.com">
                 <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
                       class="text-danger"></span>
             </div>
 
-            <div class="form-floating my-3">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" name="password" id="password" value="123456">
+            <div class="col-auto my-3">
+                <label for="password" class="visually-hidden">Password</label>
+                <input type="password" class="form-control" name="password" id="password" placeholder="Password" value="123456">
                 <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
                       class="text-danger"></span>
             </div>
