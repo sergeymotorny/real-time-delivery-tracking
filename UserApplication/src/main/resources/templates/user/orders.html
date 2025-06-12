@@ -12,7 +12,7 @@
 <header th:insert="~{blocks/header :: header}"></header>
 
 <div class="container text-center col-8">
-    <h2 class="text-success">My orders</h2>
+    <h2>My orders</h2>
     <div th:switch="${orders}">
         <h3 th:case="null">No shipments yet!</h3>
         <div th:case="*">
@@ -32,10 +32,12 @@
                         <th scope="col">OrderType</th>
                         <th scope="col">Weight</th>
                         <th scope="col">Map</th>
+                        <th scope="col">Actions</th>
+                        <th scope="col">Actions</th>
                     </tr>
                     </thead>
                     <tbody class="table-group-divider">
-                    <tr th:each="order : ${orders}" >
+                    <tr th:each="order : ${orders}">
                         <td th:text="${order.shipment != null ? order.shipment.trackingNumber : 'waiting'}"></td>
                         <td th:text="${order.receiverFullName}"></td>
                         <td th:text="${order.estimatedDelivery}"></td>
@@ -48,7 +50,28 @@
                         <td th:text="${order.orderType}"></td>
                         <td th:text="${order.weight}"></td>
                         <td>
-                            <a th:href="@{/map/{id}(id=${order.id})}" class="btn btn-sm btn-outline-primary">Open</a>
+                            <a th:href="@{/map/{id}(id=${order.id})}"
+                               class="btn btn-sm btn-outline-primary"
+                               th:if="${order.shipment != null}"
+                               th:onclick="|location.href='@{/map/{id}(id=${order.id})}'|">Open
+                            </a>
+
+                            <a class="btn btn-sm btn-outline-secondary disabled"
+                               th:if="${order.shipment == null}">Waiting</a>
+                        </td>
+                        <td>
+                            <a th:if="${order.status.name() == 'CREATED'}"
+                               th:href="@{/orders/edit/{id}(id=${order.id})}"
+                               class="btn btn-sm btn-outline-warning">
+                                Edit
+                            </a>
+                        </td>
+                        <td>
+                            <a th:if="${order.status.name() == 'CREATED'}"
+                               th:href="@{/orders/delete/{id}(id=${order.id})}"
+                               class="btn btn-sm btn-outline-danger">
+                                Delete
+                            </a>
                         </td>
                     </tr>
                     </tbody>

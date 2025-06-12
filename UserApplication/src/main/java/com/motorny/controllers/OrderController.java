@@ -25,7 +25,7 @@ public class OrderController {
     }
 
     @PostMapping("/create")
-    public String createOrder(@Valid @ModelAttribute("order") OrderDto orderDto,
+    public String createOrder(@Valid @ModelAttribute("orderDto") OrderDto orderDto,
                               BindingResult result,
                               @AuthenticationPrincipal UserDetails userDetails,
                               Model model) {
@@ -33,8 +33,37 @@ public class OrderController {
             model.addAttribute("order", orderDto);
             return "user/create-order";
         }
-
         orderService.createOrder(orderDto, userDetails);
         return "redirect:/home";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable("id") Long id,
+                               Model model,
+                               @AuthenticationPrincipal UserDetails userDetails) {
+
+        OrderDto order = orderService.getOrderForEditing(id, userDetails);
+        if (order == null) {
+            return "redirect:/users/orders?error=notfound";
+        }
+        model.addAttribute("order", order);
+        return "user/edit_order";
+    }
+
+    @PostMapping("/update")
+    public String updateOrder(@Valid @ModelAttribute("orderDto") OrderDto order,
+                              BindingResult result,
+                              @AuthenticationPrincipal UserDetails userDetails,
+                              Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("order", order);
+            return "user/edit_order";
+        }
+
+        boolean updated = orderService.updateOrder(order, userDetails);
+        if (!updated) {
+            return "redirect:/user/orders?error=not-allowed";
+        }
+        return "redirect:/users/orders?success=updated";
     }
 }
