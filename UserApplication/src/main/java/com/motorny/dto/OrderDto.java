@@ -4,6 +4,7 @@ import com.motorny.models.Shipment;
 import com.motorny.models.User;
 import com.motorny.models.enums.DeliveryType;
 import com.motorny.models.enums.OrderPaymentMethod;
+import com.motorny.models.enums.OrderStatus;
 import com.motorny.models.enums.OrderType;
 import com.motorny.validation.ValidPhone;
 import jakarta.validation.constraints.FutureOrPresent;
@@ -31,6 +32,9 @@ public class OrderDto {
     @NotEmpty(message = "The receiverAddress of the sender cannot be empty")
     private String receiverAddress;
 
+    private Double latitude;
+    private Double longitude;
+
     @ValidPhone
     private String receiverPhone;
 
@@ -51,6 +55,10 @@ public class OrderDto {
 
     @NotNull(message = "A field with a parcel weight cannot be empty")
     private Double weight;
+
+    private OrderStatus status = OrderStatus.CREATED;
+
+    private boolean courierAssigned;
 
     private Shipment shipment;
 

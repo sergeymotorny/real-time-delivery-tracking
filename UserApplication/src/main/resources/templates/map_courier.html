@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Карта (Курьер)</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/> <!-- So that the courier also sees your card, connect Leaflet -->
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-3">
+    <h3>Courier: Transfer of location</h3>
+    <p>Your coordinates will go every few seconds.</p>
+
+    <div id="map"></div> <!-- It is necessary if we want to show the courier a card with its current location -->
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script> <!-- Leaflet JS if you need a courier card -->
+
+<script src="/map-courier.js"></script> <!-- We connect JS, which sends geolocation -->
+</body>
+</html>

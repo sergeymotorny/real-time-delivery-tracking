@@ -36,6 +36,11 @@ public class Order {
     @Column(name = "receiver_address", nullable = false)
     private String receiverAddress;
 
+    @Column
+    private Double latitude;
+    @Column
+    private Double longitude;
+
     @Column(name = "receiver_phone", nullable = false)
     private String receiverPhone;
 

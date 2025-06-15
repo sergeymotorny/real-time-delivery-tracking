@@ -2,6 +2,7 @@ package com.motorny.service.impl;
 
 import com.motorny.dto.ShipmentDto;
 import com.motorny.exceptions.CourierNotFoundException;
+import com.motorny.exceptions.OrderAlreadyTakenException;
 import com.motorny.exceptions.OrderNotFoundException;
 import com.motorny.exceptions.ShipmentNotFoundException;
 import com.motorny.mappers.ShipmentMapper;
@@ -9,6 +10,7 @@ import com.motorny.models.Courier;
 import com.motorny.models.Order;
 import com.motorny.models.Shipment;
 import com.motorny.models.User;
+import com.motorny.models.enums.OrderStatus;
 import com.motorny.repositories.CourierRepository;
 import com.motorny.repositories.OrderRepository;
 import com.motorny.repositories.ShipmentRepository;
@@ -38,13 +40,6 @@ public class ShipmentServiceImpl implements ShipmentService {
 
     private final ShipmentMapper shipmentMapper;
 
-    @Override
-    public List<ShipmentDto> getAllShipments() {
-        return shipmentRepository.findAll().stream()
-                .map(shipmentMapper::toShipmentDto)
-                .toList();
-    }
-
     @Transactional
     @Override
     public ShipmentDto createShipmentForOrder(ShipmentDto shipmentDto, Long orderId, UserDetails userDetails) {
@@ -58,9 +53,15 @@ public class ShipmentServiceImpl implements ShipmentService {
 
         Shipment shipment = shipmentMapper.toShipment(shipmentDto);
         shipment.setCourier(courier);
+        shipment.setCourierLatitude(46.974429);  //the starting point of the courier
+        shipment.setCourierLongitude(32.019642); //the starting point of the courier
 
         Order foundOrder = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException("Order not found with id: " + orderId));
+
+        if (foundOrder.getStatus() != OrderStatus.CREATED) {
+            throw new OrderAlreadyTakenException("Order already taken! Take another order!");
+        }
         foundOrder.setStatus(CONFIRMED);
 
         shipment.setOrder(foundOrder);
@@ -71,9 +72,23 @@ public class ShipmentServiceImpl implements ShipmentService {
     }
 
     @Override
+    public List<ShipmentDto> getAllShipments() {
+        return shipmentRepository.findAll().stream()
+                .map(shipmentMapper::toShipmentDto)
+                .toList();
+    }
+
+    @Override
     public ShipmentDto getById(Long id) {
         Shipment shipment = shipmentRepository.findById(id)
                 .orElseThrow(() -> new ShipmentNotFoundException("Shipment not found: " + id));
+        return shipmentMapper.toShipmentDto(shipment);
+    }
+
+    @Override
+    public ShipmentDto findByOrderId(Long orderId) {
+        Shipment shipment = shipmentRepository.findByOrderId(orderId)
+                .orElseThrow(() -> new ShipmentNotFoundException("Shipment not found: " + orderId));
         return shipmentMapper.toShipmentDto(shipment);
     }
 }

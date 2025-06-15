@@ -30,6 +30,12 @@ public class Shipment {
             columnDefinition = "serial", unique = true, nullable = false, insertable = false, updatable = false)
     private Long trackingNumber;
 
+    @Column(name = "courier_latitude")
+    private Double courierLatitude;
+
+    @Column(name = "courier_longitude")
+    private Double courierLongitude;
+
     @OneToOne
     @JoinColumn(name = "order_id")
     private Order order;

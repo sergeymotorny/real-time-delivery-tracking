@@ -9,4 +9,5 @@ public interface ShipmentService {
     List<ShipmentDto> getAllShipments();
     ShipmentDto createShipmentForOrder(ShipmentDto shipmentDto, Long orderId, UserDetails userDetails);
     ShipmentDto getById(Long id);
+    ShipmentDto findByOrderId(Long orderId);
 }

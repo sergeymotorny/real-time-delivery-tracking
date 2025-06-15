@@ -22,7 +22,7 @@ public class Location {
     @CreationTimestamp
     private LocalDateTime timestamp;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "courier_id", nullable = false)
     private Courier courier;
 }

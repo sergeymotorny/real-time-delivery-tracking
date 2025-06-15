@@ -10,7 +10,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:
@@ -18,7 +18,7 @@ spring:
         format_sql: true
         show_sql: true
 
-  kafka:
+#  kafka:
 #    consumer:
 #      bootstrap-servers: localhost:9092
 #      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
@@ -28,3 +28,8 @@ spring:
 server:
   port: 8081
 
+#logging:
+#  level:
+#    org.springframework.web: "debug"
+#    org.hibernate: "error"
+#logging.level.org.springframework.security: DEBUG

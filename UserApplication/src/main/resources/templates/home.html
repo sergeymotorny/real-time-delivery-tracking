@@ -35,7 +35,7 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link d-flex align-items-center gap-2" href="#">
+                                    <a class="nav-link d-flex align-items-center gap-2" th:href="@{/supports}">
                                         <i class="bi bi-headset"></i>
                                         Supports
                                     </a>
@@ -53,7 +53,7 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link d-flex align-items-center gap-2" href="#">
+                                    <a class="nav-link d-flex align-items-center gap-2" th:href="@{/supports}">
                                         <i class="bi bi-headset"></i>
                                         Supports
                                     </a>
@@ -78,7 +78,7 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link d-flex align-items-center gap-2" href="#">
+                                    <a class="nav-link d-flex align-items-center gap-2" th:href="@{/supports}">
                                         <i class="bi bi-headset"></i>
                                         Supports
                                     </a>
@@ -102,14 +102,48 @@
             </div>
 
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-               <div>
-                   <h5>The main page of the site is GoCourier.</h5>
+                <div class="py-4">
+                    <h2 class="mb-3 fw-bold">Welcome to <span class="text-primary">GoCourier</span></h2>
 
-                   <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid beatae deleniti dolore minus repellat? Aperiam asperiores dicta dolor eius, est excepturi fugit libero qui ratione repellat ullam voluptate voluptatem voluptatibus.</p>
+                    <p class="fs-5 text-muted">
+                        Fast, reliable and convenient shipping for your business and personal needs. We help deliver your packages around town - without the hassle.
+                    </p>
 
-                   <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem delectus dolores eveniet ex facere facilis, hic id impedit nam nesciunt placeat porro quibusdam rem repellendus reprehenderit, totam vel velit vitae!</p>
-               </div>
+                    <div class="row mt-5">
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm rounded-4 h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="bi bi-box-seam-fill"></i> Easy order</h5>
+                                    <p class="card-text">Make delivery in a couple of clicks - our courier will pick up the parcel at a convenient time for you.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm rounded-4 h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="bi bi-truck-front-fill"></i> Fast delivery</h5>
+                                    <p class="card-text">We will deliver within a day within the city or as soon as possible with the “rush delivery” feature.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm rounded-4 h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="bi bi-lock-fill"></i> Tracking and reliability</h5>
+                                    <p class="card-text">Keep track of the delivery status in your personal cabinet. We guarantee the safety of each shipment.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 text-center">
+                        <a th:href="@{/orders/courier/form}" class="btn btn-primary btn-lg px-4">Delivery</a>
+                    </div>
+                </div>
             </main>
+
         </div>
     </div>
 </div>

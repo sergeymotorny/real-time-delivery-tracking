@@ -9,10 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ShipmentDto {
-
-    private Long id;
-
+public class OrderWithCourierLocationDto {
+    private OrderDto orderDto;
     private Double courierLatitude;
     private Double courierLongitude;
 }

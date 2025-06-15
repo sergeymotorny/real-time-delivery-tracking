@@ -15,6 +15,7 @@ import com.motorny.repositories.UserRepository;
 import com.motorny.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -66,7 +67,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<AdminUserDto> getUsersByRole(String roleName) {
-        List<User> users = userRepository.findByRoles_Name(roleName);
+        List<User> users = userRepository.findByRolesName(roleName);
         return users.stream()
                 .map(userMapper::toAdminUserDto)
                 .toList();
