@@ -7,6 +7,8 @@ spring:
     password: postgres
     username: postgres
     driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-init-sql: SET TIME ZONE 'UTC'
 
   jpa:
     hibernate:
@@ -17,13 +19,15 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
         show_sql: true
+        jdbc:
+          time_zone: UTC
 
-#  kafka:
-#    consumer:
-#      bootstrap-servers: localhost:9092
-#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-#      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-#      group-id: user-group
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: user-group
 
 server:
   port: 8081
