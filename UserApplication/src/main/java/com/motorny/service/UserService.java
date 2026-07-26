@@ -21,4 +21,6 @@ public interface UserService {
     boolean checkIfValidOldPassword(UserCreateDto userCreateDto, String oldPassword);
     AdminUserDto setUserStatusDeleted(Long id);
     AdminUserDto setUserStatusActive(Long id);
+    AdminUserDto setUserStatusInactive(Long id);
+    AdminUserDto assignRole(Long userId, String roleName);
 }

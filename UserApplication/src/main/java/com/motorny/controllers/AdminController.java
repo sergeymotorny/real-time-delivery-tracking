@@ -58,4 +58,17 @@ public class AdminController {
         model.addAttribute("user", userService.setUserStatusActive(id));
         return "redirect:/admin/users";
     }
+
+    @PostMapping("/users/inactive")
+    public String inactivateUser(@RequestParam("id") Long id) {
+        userService.setUserStatusInactive(id);
+        return "redirect:/admin/users";
+    }
+
+    @PostMapping("/users/assign-role")
+    public String assignRole(@RequestParam("id") Long id,
+                             @RequestParam("role") String role) {
+        userService.assignRole(id, role);
+        return "redirect:/admin/users";
+    }
 }

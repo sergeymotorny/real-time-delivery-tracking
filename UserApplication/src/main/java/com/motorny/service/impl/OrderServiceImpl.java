@@ -8,10 +8,12 @@ import com.motorny.mappers.OrderMapper;
 import com.motorny.models.Order;
 import com.motorny.models.User;
 import com.motorny.models.enums.OrderStatus;
+import com.motorny.models.enums.Status;
 import com.motorny.repositories.OrderRepository;
 import com.motorny.repositories.UserRepository;
 import com.motorny.service.OrderService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -55,17 +57,17 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto createOrder(OrderDto orderDto, UserDetails userDetails) {
-
         String userByEmail = userDetails.getUsername();
-
         User foundUser = userRepository.findByEmail(userByEmail)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + userByEmail));
 
+        if (foundUser.getStatus() == Status.INACTIVE) {
+            throw new AccessDeniedException("Your account is inactive. You cannot create orders.");
+        }
+
         Order order = orderMapper.toOrder(orderDto);
         order.setCustomer(foundUser);
-
         Order savedOrder = orderRepository.save(order);
-
         return orderMapper.toOrderDto(savedOrder);
     }
 

@@ -75,24 +75,44 @@
     </div>
 
     <div class="row mt-5">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="card p-4 shadow-sm">
-                <form th:action="@{/admin/users/delete}" method="post">
-                    <h5 class="card-title"><i class="bi bi-trash-fill"></i> Delete the user</h5>
+                <h5 class="card-title"><i class="bi bi-toggle-on"></i> Change user status</h5>
+                <form th:action="@{/admin/users/restore}" method="post" class="mb-2">
                     <div class="input-group">
                         <input type="number" name="id" class="form-control" placeholder="User ID" required>
-                        <button class="btn btn-outline-danger" type="submit">Remove</button>
+                        <button class="btn btn-outline-success" type="submit">ACTIVE</button>
+                    </div>
+                </form>
+                <form th:action="@{/admin/users/inactive}" method="post" class="mb-2">
+                    <div class="input-group">
+                        <input type="number" name="id" class="form-control" placeholder="User ID" required>
+                        <button class="btn btn-outline-secondary" type="submit">INACTIVE</button>
+                    </div>
+                </form>
+                <form th:action="@{/admin/users/delete}" method="post">
+                    <div class="input-group">
+                        <input type="number" name="id" class="form-control" placeholder="User ID" required>
+                        <button class="btn btn-outline-danger" type="submit">DELETED</button>
                     </div>
                 </form>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="card p-4 shadow-sm">
-                <form th:action="@{/admin/users/restore}" method="post">
-                    <h5 class="card-title"><i class="bi bi-person-plus-fill"></i> To activate the user</h5>
-                    <div class="input-group">
+                <form th:action="@{/admin/users/assign-role}" method="post">
+                    <h5 class="card-title"><i class="bi bi-person-badge-fill"></i> Assign role</h5>
+                    <div class="mb-2">
                         <input type="number" name="id" class="form-control" placeholder="User ID" required>
-                        <button class="btn btn-outline-success" type="submit">Activate</button>
+                    </div>
+                    <div class="input-group">
+                        <select name="role" class="form-select" required>
+                            <option value="">Select role</option>
+                            <option value="CLIENT">CLIENT</option>
+                            <option value="COURIER">COURIER</option>
+                            <option value="ADMIN">ADMIN</option>
+                        </select>
+                        <button class="btn btn-outline-primary" type="submit">Assign</button>
                     </div>
                 </form>
             </div>

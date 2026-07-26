@@ -7,9 +7,11 @@ import com.motorny.dto.user.UserUpdatePasswordDto;
 import com.motorny.exceptions.RoleNotFoundException;
 import com.motorny.exceptions.UserAlreadyExistsException;
 import com.motorny.mappers.UserMapper;
+import com.motorny.models.Courier;
 import com.motorny.models.Role;
 import com.motorny.models.User;
 import com.motorny.models.enums.Status;
+import com.motorny.repositories.CourierRepository;
 import com.motorny.repositories.RoleRepository;
 import com.motorny.repositories.UserRepository;
 import com.motorny.service.UserService;
@@ -33,6 +35,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final CourierRepository courierRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
 
@@ -136,6 +139,42 @@ public class UserServiceImpl implements UserService {
         foundUser.setStatus(Status.ACTIVE);
         userRepository.save(foundUser);
         return userMapper.toAdminUserDto(foundUser);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Override
+    public AdminUserDto setUserStatusInactive(Long id) {
+        User foundUser = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id '" + id + "'"));
+        foundUser.setStatus(Status.INACTIVE);
+        userRepository.save(foundUser);
+        return userMapper.toAdminUserDto(foundUser);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Override
+    public AdminUserDto assignRole(Long userId, String roleName) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id '" + userId + "'"));
+        Role role = roleRepository.findByName(roleName)
+                .orElseThrow(() -> new RoleNotFoundException("Role not found: " + roleName));
+
+        // clear existing roles and set the new one
+        user.getRoles().clear();
+        user.addRole(role);
+
+        // if assigning COURIER role — create courier record if not exists
+        if ("COURIER".equals(roleName)) {
+            boolean alreadyCourier = courierRepository.findByUser(user).isPresent();
+            if (!alreadyCourier) {
+                Courier courier = new Courier();
+                courier.setUser(user);
+                courierRepository.save(courier);
+            }
+        }
+
+        userRepository.save(user);
+        return userMapper.toAdminUserDto(user);
     }
 
     private boolean emailExists(String email) {
