@@ -11,81 +11,96 @@
 <body>
 <header th:insert="~{blocks/header :: header}"></header>
 
-<div class="container text-center col-10 my-5">
-    <p class="fw-light">View all users</p>
+<div class="container my-5">
+    <h2 class="mb-3 text-center"><i class="bi bi-people-fill"></i> List of system users</h2>
+    <p class="text-center text-muted mb-4">Manage roles, statuses and information about users</p>
 
-    <form th:action="@{/admin/users/find}" method="get">
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" id="role" name="role" placeholder="Find Role" >
-
-            <button type="submit" id="search" name="action" value="search" class="btn btn-outline-secondary">
+    <!-- 🔍 Поиск по роли -->
+    <form th:action="@{/admin/users/find}" method="get" class="row g-2 mb-4">
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="role" name="role" placeholder="Searching for the role...">
+        </div>
+        <div class="col-md-2 d-grid gap-2 d-md-flex justify-content-md-end">
+            <button type="submit" name="action" value="search" class="btn btn-outline-primary me-2">
                 <i class="bi bi-search"></i>
             </button>
-
-            <button type="submit" id="reset" name="action" value="reset" class="btn btn-outline-secondary">
+            <button type="submit" name="action" value="reset" class="btn btn-outline-secondary">
                 <i class="bi bi-arrow-counterclockwise"></i>
             </button>
         </div>
     </form>
 
-    <form th:action="@{/admin/users/find}" method="get">
-        <div class="input-group mb-3">
-            <button type="submit" class="btn btn-outline-secondary">
-                <i class="bi bi-arrow-counterclockwise"></i>
-            </button>
-        </div>
-    </form>
-
+    <!-- 📋 Таблица пользователей -->
     <div class="table-responsive">
-        <table class="table table-hover">
-            <thead>
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
             <tr>
-                <th class="fw-light">Id</th>
-                <th class="fw-light">FirstName</th>
-                <th class="fw-light">LastName</th>
-                <th class="fw-light">Phone</th>
-                <th class="fw-light">Email</th>
-                <th class="fw-light">CreatedAt</th>
-                <th class="fw-light">Status</th>
-                <th class="fw-light">Role</th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Registration Date</th>
+                <th>Status</th>
+                <th>Role</th>
+                <th>Action</th>
             </tr>
             </thead>
-            <tbody class="table-group-divider">
+            <tbody>
             <tr th:each="user : ${users}">
                 <td th:text="${user.id}"></td>
                 <td th:text="${user.firstName}"></td>
                 <td th:text="${user.lastName}"></td>
                 <td th:text="${user.phone}"></td>
                 <td th:text="${user.email}"></td>
-                <td th:text="${user.createdAt}"></td>
-                <td th:text="${user.status}"></td>
-                <td th:text="${user.role}"></td>
+                <td th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd')}"></td>
+<!--                <td th:text="${user.status}"></td>-->
                 <td>
-                    <a th:href="@{/users/form-update/{id}(id=${user.id})}" class="btn btn-primary">
-                        <i>Update</i></a>
+                    <span th:text="${user.status}" class="badge"
+                          th:classappend="${user.status == 'ACTIVE' ? 'bg-success' : (user.status == 'DELETED' ? 'bg-danger' : 'bg-secondary')}">
+                    </span>
+                </td>
+
+                <td>
+                    <span th:text="${user.role}" class="badge bg-info text-dark"></span>
+                </td>
+                <td>
+                    <a th:href="@{/users/form-update/{id}(id=${user.id})}" class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-pencil-square"></i> Change
+                    </a>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
+
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <div class="card p-4 shadow-sm">
+                <form th:action="@{/admin/users/delete}" method="post">
+                    <h5 class="card-title"><i class="bi bi-trash-fill"></i> Delete the user</h5>
+                    <div class="input-group">
+                        <input type="number" name="id" class="form-control" placeholder="User ID" required>
+                        <button class="btn btn-outline-danger" type="submit">Remove</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card p-4 shadow-sm">
+                <form th:action="@{/admin/users/restore}" method="post">
+                    <h5 class="card-title"><i class="bi bi-person-plus-fill"></i> To activate the user</h5>
+                    <div class="input-group">
+                        <input type="number" name="id" class="form-control" placeholder="User ID" required>
+                        <button class="btn btn-outline-success" type="submit">Activate</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
-<form th:action="@{/admin/users/delete}" method="post">
-    <div class="container my-5">
-        <label class="fw-light" for="idDelete">Delete the user:</label>
-        <input type="number" name="id" id="idDelete" placeholder="ID courier">
-        <button type="submit">Delete</button>
-    </div>
-</form>
-
-<form th:action="@{/admin/users/restore}" method="post">
-    <div class="container my-5">
-        <label class="fw-light" for="idRestore">Restore the user:</label>
-        <input type="number" name="id" id="idRestore" placeholder="ID courier">
-        <button type="submit">Activate Status</button>
-    </div>
-</form>
-
-<div th:insert="~{blocks/footer :: footer}"></div>
+<!--<div th:insert="~{blocks/footer :: footer}"></div>-->
+<footer th:insert="~{blocks/footer :: footer}"></footer>
 </body>
 </html>

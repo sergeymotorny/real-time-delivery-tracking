@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class DeliveryLocationService {
 
-    private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public DeliveryLocationService(KafkaTemplate<String, Object> kafkaTemplate) {
+    public DeliveryLocationService(KafkaTemplate<String, String> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 

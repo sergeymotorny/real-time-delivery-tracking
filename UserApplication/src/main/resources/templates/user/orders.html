@@ -11,71 +11,81 @@
 <body>
 <header th:insert="~{blocks/header :: header}"></header>
 
-<div class="container text-center col-8">
-    <h2>My orders</h2>
-    <div th:switch="${orders}">
-        <h3 th:case="null">No shipments yet!</h3>
-        <div th:case="*">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th scope="col">TrackingNumber</th>
-                        <th scope="col">ReceiverName</th>
-                        <th scope="col">EstimatedDelivery</th>
-                        <th scope="col">ReceiverAddress</th>
-                        <th scope="col">ReceiverPhone</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">DeliveryType</th>
-                        <th scope="col">PaymentMethod</th>
-                        <th scope="col">OrderType</th>
-                        <th scope="col">Weight</th>
-                        <th scope="col">Map</th>
-                        <th scope="col">Actions</th>
-                        <th scope="col">Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody class="table-group-divider">
-                    <tr th:each="order : ${orders}">
-                        <td th:text="${order.shipment != null ? order.shipment.trackingNumber : 'waiting'}"></td>
-                        <td th:text="${order.receiverFullName}"></td>
-                        <td th:text="${order.estimatedDelivery}"></td>
-                        <td th:text="${order.receiverAddress}"></td>
-                        <td th:text="${order.receiverPhone}"></td>
-                        <td th:text="${order.description}"></td>
-                        <td th:text="${order.shipment != null ? order.shipment.status : 'waiting'}"></td>
-                        <td th:text="${order.deliveryType}"></td>
-                        <td th:text="${order.paymentMethod}"></td>
-                        <td th:text="${order.orderType}"></td>
-                        <td th:text="${order.weight}"></td>
-                        <td>
-                            <a th:href="@{/map/{id}(id=${order.id})}"
-                               class="btn btn-sm btn-outline-primary"
-                               th:if="${order.shipment != null}"
-                               th:onclick="|location.href='@{/map/{id}(id=${order.id})}'|">Open
-                            </a>
+<div class="container my-5">
+    <div class="text-center mb-4">
+        <h2 class="fw-light"><i class="bi bi-card-checklist"></i> My Delivery Requests</h2>
+    </div>
 
-                            <a class="btn btn-sm btn-outline-secondary disabled"
-                               th:if="${order.shipment == null}">Waiting</a>
-                        </td>
-                        <td>
-                            <a th:if="${order.status.name() == 'CREATED'}"
-                               th:href="@{/orders/edit/{id}(id=${order.id})}"
-                               class="btn btn-sm btn-outline-warning">
-                                Edit
-                            </a>
-                        </td>
-                        <td>
-                            <a th:if="${order.status.name() == 'CREATED'}"
-                               th:href="@{/orders/delete/{id}(id=${order.id})}"
-                               class="btn btn-sm btn-outline-danger">
-                                Delete
-                            </a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+    <div th:switch="${orders}">
+        <div th:case="null">
+            <div class="alert alert-info text-center">
+                <i class="bi bi-info-circle"></i> No shipments yet!
+            </div>
+        </div>
+        <div th:case="*">
+            <div class="card shadow-sm">
+                <div class="card-body table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                        <tr>
+                            <th>Tracking</th>
+                            <th>Receiver</th>
+                            <th>Date</th>
+                            <th>Address</th>
+                            <th>Phone</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Delivery Type</th>
+                            <th>Payment</th>
+                            <th>Type</th>
+                            <th>Weight</th>
+                            <th>Map</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                        <tr th:each="order : ${orders}">
+                            <td th:text="${order.shipment != null ? order.shipment.trackingNumber : 'Waiting'}"></td>
+                            <td th:text="${order.receiverFullName}"></td>
+                            <td th:text="${order.estimatedDelivery}"></td>
+                            <td th:text="${order.receiverAddress}"></td>
+                            <td th:text="${order.receiverPhone}"></td>
+                            <td th:text="${order.description}"></td>
+                            <td th:text="${order.shipment != null ? order.shipment.status : 'Waiting'}"></td>
+                            <td th:text="${order.deliveryType}"></td>
+                            <td th:text="${order.paymentMethod}"></td>
+                            <td th:text="${order.orderType}"></td>
+                            <td th:text="${order.weight}"></td>
+                            <td>
+                                <a th:if="${order.shipment != null}"
+                                   th:href="@{/map/{id}(id=${order.id})}"
+                                   class="btn btn-sm btn-outline-primary"
+                                   title="View on map">
+                                    <i class="bi bi-map"></i>
+                                </a>
+                                <button th:if="${order.shipment == null}" class="btn btn-sm btn-outline-secondary"
+                                        disabled>
+                                    <i class="bi bi-hourglass-split"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a th:if="${order.status.name() == 'CREATED'}"
+                                       th:href="@{/orders/edit/{id}(id=${order.id})}"
+                                       class="btn btn-sm btn-outline-warning" title="Edit">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <a th:if="${order.status.name() == 'CREATED'}"
+                                       th:href="@{/orders/delete/{id}(id=${order.id})}"
+                                       class="btn btn-sm btn-outline-danger" title="Delete">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
