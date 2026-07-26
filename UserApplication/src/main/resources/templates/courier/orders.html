@@ -43,9 +43,15 @@
                     </p>
                     <form th:action="@{/couriers/orders/take}" method="post" class="d-inline">
                         <input type="hidden" name="orderId" th:value="${order.id}">
-                        <button type="submit" class="btn btn-sm btn-outline-success">
+                        <button type="submit"
+                                class="btn btn-sm btn-outline-success"
+                                th:if="${order.shipment == null}">
                             <i class="bi bi-check-circle"></i> Accept delivery request
                         </button>
+                        <span th:if="${order.shipment != null}"
+                              class="badge bg-success">
+                            <i class="bi bi-truck"></i> Accepted
+                        </span>
                     </form>
                 </div>
             </div>

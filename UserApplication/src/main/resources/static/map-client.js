@@ -144,7 +144,7 @@ function drawRoute(uuid, start, end) {
         return;
     }
 
-    const apiKey = '#';
+    const apiKey = 'YOUR_OPENROUTESERVICE_API_KEY';
     const url = 'https://api.openrouteservice.org/v2/directions/driving-car';
 
     fetch(url, {

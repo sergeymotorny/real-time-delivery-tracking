@@ -15,7 +15,7 @@
 <div class="container my-3">
     <h3 class="text-center">Create Delivery Request</h3>
     <div class="form-floating mb-3 w-50">
-        <form th:action="@{/orders/create}" th:object="${order}" method="POST">
+        <form th:action="@{/orders/create}" th:object="${orderDto}" method="POST">
 
             <div class="form-group">
                 <b>Information about the sender.</b>

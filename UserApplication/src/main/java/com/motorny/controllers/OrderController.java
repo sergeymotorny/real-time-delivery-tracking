@@ -20,7 +20,7 @@ public class OrderController {
 
     @GetMapping("/courier/form")
     public String showFormCourierOrder(Model model) {
-        model.addAttribute("order", new OrderDto());
+        model.addAttribute("orderDto", new OrderDto());
         return "user/create-order";
     }
 
@@ -30,7 +30,7 @@ public class OrderController {
                               @AuthenticationPrincipal UserDetails userDetails,
                               Model model) {
         if (result.hasErrors()) {
-            model.addAttribute("order", orderDto);
+            model.addAttribute("orderDto", orderDto);
             return "user/create-order";
         }
         orderService.createOrder(orderDto, userDetails);
