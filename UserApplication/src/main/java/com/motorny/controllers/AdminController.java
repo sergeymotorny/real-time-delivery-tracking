@@ -1,5 +1,6 @@
 package com.motorny.controllers;
 
+import com.motorny.service.AssignmentService;
 import com.motorny.service.OrderService;
 import com.motorny.service.UserService;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,7 @@ public class AdminController {
 
     private final OrderService orderService;
     private final UserService userService;
+    private final AssignmentService assignmentService;
 
     @GetMapping("/profile")
     public String getAdminProfile() {
@@ -57,5 +59,24 @@ public class AdminController {
     public String restoreUser(@RequestParam("id") Long id, Model model) {
         model.addAttribute("user", userService.setUserStatusActive(id));
         return "redirect:/admin/users";
+    }
+
+    @PostMapping("/users/inactive")
+    public String inactivateUser(@RequestParam("id") Long id) {
+        userService.setUserStatusInactive(id);
+        return "redirect:/admin/users";
+    }
+
+    @PostMapping("/users/assign-role")
+    public String assignRole(@RequestParam("id") Long id,
+                             @RequestParam("role") String role) {
+        userService.assignRole(id, role);
+        return "redirect:/admin/users";
+    }
+
+    @PostMapping("/orders/assign")
+    public String autoAssignCourier(@RequestParam("orderId") Long orderId) {
+        assignmentService.assignCourierToOrder(orderId);
+        return "redirect:/admin/orders";
     }
 }

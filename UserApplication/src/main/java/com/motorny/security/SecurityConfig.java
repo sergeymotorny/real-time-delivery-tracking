@@ -1,11 +1,11 @@
 package com.motorny.security;
 
 import com.motorny.models.Role;
+import com.motorny.models.enums.Status;
 import com.motorny.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -60,13 +60,19 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return email -> userRepository.findByEmail(email)
-                .map(user -> User.builder()
-                        .username(user.getEmail())
-                        .password(user.getPassword())
-                        .roles(user.getRoles().stream()
-                                .map(Role::getName)
-                                .toArray(String[]::new))
-                        .build())
+                .map(user -> {
+                    // DELETED users cannot log in at all
+                    if (user.getStatus() == Status.DELETED) {
+                        throw new UsernameNotFoundException("Account has been deleted");
+                    }
+                    return User.builder()
+                            .username(user.getEmail())
+                            .password(user.getPassword())
+                            .roles(user.getRoles().stream()
+                                    .map(Role::getName)
+                                    .toArray(String[]::new))
+                            .build();
+                })
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 

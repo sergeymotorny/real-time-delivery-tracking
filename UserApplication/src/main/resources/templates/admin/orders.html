@@ -35,6 +35,8 @@
                         <th class="fw-light" scope="col">CreatedAt</th>
                         <th class="fw-light" scope="col">UpdatedAt</th>
                         <th class="fw-light" scope="col">OrderStatus</th>
+                        <th class="fw-light" scope="col">Courier</th>
+                        <th class="fw-light" scope="col">Assignment</th>
                     </tr>
                     </thead>
                     <tbody class="table-group-divider">
@@ -53,6 +55,25 @@
                         <td th:text="${order.createdAt}"></td>
                         <td th:text="${order.updatedAt}"></td>
                         <td th:text="${order.status}"></td>
+                        <td>
+                            <span th:if="${order.shipment != null and order.shipment.courier != null}">
+                                <span th:text="${order.shipment.courier.user.firstName + ' ' + order.shipment.courier.user.lastName}"
+                                      class="badge bg-info text-dark"></span>
+                            </span>
+                            <span th:if="${order.shipment == null or order.shipment.courier == null}"
+                                  class="text-muted">—</span>
+                        </td>
+                        <td>
+                            <form th:if="${order.status.name() == 'CREATED'}"
+                                  th:action="@{/admin/orders/assign}" method="post">
+                                <input type="hidden" name="orderId" th:value="${order.id}">
+                                <button type="submit" class="btn btn-sm btn-outline-success">
+                                    <i class="bi bi-robot"></i> Auto-assign
+                                </button>
+                            </form>
+                            <span th:if="${order.status.name() != 'CREATED'}"
+                                  class="badge bg-secondary">Assigned</span>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
