@@ -1,5 +1,6 @@
 package com.motorny.controllers;
 
+import com.motorny.service.AssignmentService;
 import com.motorny.service.OrderService;
 import com.motorny.service.UserService;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,7 @@ public class AdminController {
 
     private final OrderService orderService;
     private final UserService userService;
+    private final AssignmentService assignmentService;
 
     @GetMapping("/profile")
     public String getAdminProfile() {
@@ -70,5 +72,11 @@ public class AdminController {
                              @RequestParam("role") String role) {
         userService.assignRole(id, role);
         return "redirect:/admin/users";
+    }
+
+    @PostMapping("/orders/assign")
+    public String autoAssignCourier(@RequestParam("orderId") Long orderId) {
+        assignmentService.assignCourierToOrder(orderId);
+        return "redirect:/admin/orders";
     }
 }
