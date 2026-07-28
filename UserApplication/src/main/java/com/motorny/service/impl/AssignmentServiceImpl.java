@@ -13,6 +13,7 @@ import com.motorny.repositories.CourierRepository;
 import com.motorny.repositories.OrderRepository;
 import com.motorny.repositories.ShipmentRepository;
 import com.motorny.service.AssignmentService;
+import com.motorny.service.PriorityService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     private final CourierRepository courierRepository;
     private final ShipmentRepository shipmentRepository;
     private final ShipmentMapper shipmentMapper;
+    private final PriorityService priorityService;
 
     @Transactional
     @Override
@@ -135,15 +137,12 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     /**
-     * Priority based on order weight.
-     * Heavier orders get higher priority (larger value = lower cost contribution).
+     * Priority based on full PriorityService score.
      * Minimum value is 0.1 to avoid division by zero.
      */
     private double getPriority(Order order) {
-        if (order.getWeight() == null || order.getWeight() <= 0) {
-            return 0.1;
-        }
-        return order.getWeight();
+        double score = priorityService.calculateScore(order);
+        return Math.max(score, 0.1);
     }
 
     /**

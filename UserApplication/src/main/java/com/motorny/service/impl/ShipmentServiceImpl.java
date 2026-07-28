@@ -91,4 +91,15 @@ public class ShipmentServiceImpl implements ShipmentService {
                 .orElseThrow(() -> new ShipmentNotFoundException("Shipment not found: " + orderId));
         return shipmentMapper.toShipmentDto(shipment);
     }
+
+    @Override
+    public List<ShipmentDto> getShipmentsByCourier(UserDetails userDetails) {
+        User user = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + userDetails.getUsername()));
+        Courier courier = courierRepository.findByUser(user)
+                .orElseThrow(() -> new CourierNotFoundException("Courier not found for user: " + user.getId()));
+        return shipmentRepository.findByCourier(courier).stream()
+                .map(shipmentMapper::toShipmentDto)
+                .toList();
+    }
 }

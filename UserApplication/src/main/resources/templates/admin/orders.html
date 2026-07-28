@@ -12,6 +12,14 @@
 <header th:insert="~{blocks/header :: header}"></header>
     <div class="container my-3">
         <h3 class="fw-light">Information about orders.</h3>
+        <div class="mt-2">
+            <a th:href="@{/admin/orders}" class="btn btn-sm btn-outline-secondary me-2">
+                <i class="bi bi-list-ul"></i> All orders
+            </a>
+            <a th:href="@{/admin/orders/priority}" class="btn btn-sm btn-outline-warning">
+                <i class="bi bi-sort-down"></i> Sort by Priority
+            </a>
+        </div>
     </div>
 
     <div class="container text-center col-10" th:switch="${orders}">
@@ -35,6 +43,7 @@
                         <th class="fw-light" scope="col">CreatedAt</th>
                         <th class="fw-light" scope="col">UpdatedAt</th>
                         <th class="fw-light" scope="col">OrderStatus</th>
+                        <th class="fw-light" scope="col">Priority</th>
                         <th class="fw-light" scope="col">Courier</th>
                         <th class="fw-light" scope="col">Assignment</th>
                     </tr>
@@ -55,6 +64,14 @@
                         <td th:text="${order.createdAt}"></td>
                         <td th:text="${order.updatedAt}"></td>
                         <td th:text="${order.status}"></td>
+                        <td>
+                            <span th:if="${order.priorityLevel != null}"
+                                  class="badge"
+                                  th:classappend="${order.priorityLevel.name() == 'HIGH' ? 'bg-danger' : (order.priorityLevel.name() == 'MEDIUM' ? 'bg-warning text-dark' : 'bg-success')}"
+                                  th:text="${order.priorityLevel}">
+                            </span>
+                            <span th:if="${order.priorityLevel == null}" class="text-muted">—</span>
+                        </td>
                         <td>
                             <span th:if="${order.shipment != null and order.shipment.courier != null}">
                                 <span th:text="${order.shipment.courier.user.firstName + ' ' + order.shipment.courier.user.lastName}"
@@ -81,16 +98,7 @@
         </div>
     </div>
 
-    <div class="container my-5">
-        <b class="fw-light">Delete the order:</b>
-        <input type="number" name="delete" id="deleteOrder" placeholder="TrackingNumber">
-    </div>
 
-    <div class="container my-5">
-        <b class="fw-light">Update the order:</b>
-        <input type="number" name="update" id="updateOrder" placeholder="TrackingNumber">
-    </div>
-
-<div th:insert="~{blocks/footer :: footer}"></div>
+<footer th:insert="~{blocks/footer :: footer}"></footer>
 </body>
 </html>
