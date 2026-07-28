@@ -10,4 +10,5 @@ public interface ShipmentService {
     ShipmentDto createShipmentForOrder(ShipmentDto shipmentDto, Long orderId, UserDetails userDetails);
     ShipmentDto getById(Long id);
     ShipmentDto findByOrderId(Long orderId);
+    List<ShipmentDto> getShipmentsByCourier(UserDetails userDetails);
 }

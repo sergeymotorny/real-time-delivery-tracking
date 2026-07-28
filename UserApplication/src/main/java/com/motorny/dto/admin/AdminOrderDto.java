@@ -5,6 +5,7 @@ import com.motorny.models.enums.DeliveryType;
 import com.motorny.models.enums.OrderPaymentMethod;
 import com.motorny.models.enums.OrderStatus;
 import com.motorny.models.enums.OrderType;
+import com.motorny.models.enums.PriorityLevel;
 import com.motorny.validation.ValidPhone;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotEmpty;
@@ -57,4 +58,6 @@ public class AdminOrderDto {
     private OrderStatus status;
 
     private Shipment shipment;
+
+    private PriorityLevel priorityLevel;
 }

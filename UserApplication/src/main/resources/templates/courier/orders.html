@@ -28,7 +28,14 @@
             <div class="list-group shadow-sm">
                 <div class="list-group-item list-group-item-action py-3" th:each="order, iterStat : ${orders}">
                     <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">Delivery Request #<span th:text="${iterStat.count}"></span></h5>
+                        <h5 class="mb-1">
+                            Delivery Request #<span th:text="${iterStat.count}"></span>
+                            <span th:if="${order.priorityLevel != null}"
+                                  class="badge ms-2"
+                                  th:classappend="${order.priorityLevel.name() == 'HIGH' ? 'bg-danger' : (order.priorityLevel.name() == 'MEDIUM' ? 'bg-warning text-dark' : 'bg-success')}"
+                                  th:text="${order.priorityLevel}">
+                            </span>
+                        </h5>
                         <small>
                             <a th:href="@{/couriers/orders/{id}(id=${order.id})}" class="btn btn-sm btn-outline-info me-2">
                                 <i class="bi bi-eye"></i> View

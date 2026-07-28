@@ -2,6 +2,7 @@ package com.motorny.controllers;
 
 import com.motorny.dto.ShipmentDto;
 import com.motorny.service.OrderService;
+import com.motorny.service.PriorityService;
 import com.motorny.service.ShipmentService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -19,11 +20,19 @@ public class CourierController {
 
     private final OrderService orderService;
     private final ShipmentService shipmentService;
+    private final PriorityService priorityService;
 
     @GetMapping("/orders")
     public String getAllOrders(Model model) {
-        model.addAttribute("orders", orderService.getAllOrders());
+        model.addAttribute("orders", priorityService.getOrdersSortedByPriority());
         return "courier/orders";
+    }
+
+    @GetMapping("/my-shipments")
+    public String getMyShipments(Model model,
+                                 @AuthenticationPrincipal UserDetails userDetails) {
+        model.addAttribute("shipments", shipmentService.getShipmentsByCourier(userDetails));
+        return "courier/my-shipments";
     }
 
     @GetMapping("/orders/{id}")

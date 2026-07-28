@@ -2,6 +2,7 @@ package com.motorny.controllers;
 
 import com.motorny.service.AssignmentService;
 import com.motorny.service.OrderService;
+import com.motorny.service.PriorityService;
 import com.motorny.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ public class AdminController {
     private final OrderService orderService;
     private final UserService userService;
     private final AssignmentService assignmentService;
+    private final PriorityService priorityService;
 
     @GetMapping("/profile")
     public String getAdminProfile() {
@@ -28,6 +30,13 @@ public class AdminController {
     @GetMapping("/orders")
     public String getAllOrders(Model model) {
         model.addAttribute("orders", orderService.getAllOrders());
+        return "admin/orders";
+    }
+
+    @GetMapping("/orders/priority")
+    public String getOrdersByPriority(Model model) {
+        model.addAttribute("orders", priorityService.getOrdersSortedByPriority());
+        model.addAttribute("priorityView", true);
         return "admin/orders";
     }
 
