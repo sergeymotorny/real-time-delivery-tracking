@@ -3,3 +3,5 @@ logs.txt
 .kiro/
 request_delivry.txt
 send_coordinates.txt
+.idea/
+.vscode/
