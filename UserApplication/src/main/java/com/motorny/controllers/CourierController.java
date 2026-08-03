@@ -3,6 +3,7 @@ package com.motorny.controllers;
 import com.motorny.dto.ShipmentDto;
 import com.motorny.service.OrderService;
 import com.motorny.service.PriorityService;
+import com.motorny.service.RouteOptimizerService;
 import com.motorny.service.ShipmentService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,7 @@ public class CourierController {
     private final OrderService orderService;
     private final ShipmentService shipmentService;
     private final PriorityService priorityService;
+    private final RouteOptimizerService routeOptimizerService;
 
     @GetMapping("/orders")
     public String getAllOrders(Model model) {
@@ -33,6 +35,13 @@ public class CourierController {
                                  @AuthenticationPrincipal UserDetails userDetails) {
         model.addAttribute("shipments", shipmentService.getShipmentsByCourier(userDetails));
         return "courier/my-shipments";
+    }
+
+    @GetMapping("/route")
+    public String getOptimizedRoute(Model model,
+                                    @AuthenticationPrincipal UserDetails userDetails) {
+        model.addAttribute("route", routeOptimizerService.buildOptimizedRoute(userDetails));
+        return "courier/route";
     }
 
     @GetMapping("/orders/{id}")
