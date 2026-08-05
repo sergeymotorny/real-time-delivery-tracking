@@ -21,6 +21,8 @@
             <th>LastName</th>
             <th>Phone</th>
             <th>Email</th>
+            <th>Telegram Chat ID</th>
+            <th>Action</th>
         </tr>
         </thead>
         <tbody>
@@ -29,11 +31,18 @@
             <td th:text="${user.lastName}"></td>
             <td th:text="${user.phone}"></td>
             <td th:text="${user.email}"></td>
-
-            <td><a th:href="@{/users/form-update/{id}(id=${user.id})}" class="btn btn-primary">
-                <i>Update</i></a>
+            <td>
+                <span th:if="${user.telegramChatId != null and !#strings.isEmpty(user.telegramChatId)}"
+                      th:text="${user.telegramChatId}" class="badge bg-success">
+                </span>
+                <span th:if="${user.telegramChatId == null or #strings.isEmpty(user.telegramChatId)}"
+                      class="text-muted">Not set</span>
             </td>
-
+            <td>
+                <a th:href="@{/users/form-update/{id}(id=${user.id})}" class="btn btn-primary btn-sm">
+                    <i class="bi bi-pencil-square"></i> Update
+                </a>
+            </td>
         </tr>
         </tbody>
     </table>

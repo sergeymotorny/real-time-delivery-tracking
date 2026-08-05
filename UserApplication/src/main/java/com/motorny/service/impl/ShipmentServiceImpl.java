@@ -16,6 +16,7 @@ import com.motorny.repositories.OrderRepository;
 import com.motorny.repositories.ShipmentRepository;
 import com.motorny.repositories.UserRepository;
 import com.motorny.service.ShipmentService;
+import com.motorny.service.TelegramNotificationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,6 +40,7 @@ public class ShipmentServiceImpl implements ShipmentService {
     private final UserRepository userRepository;
 
     private final ShipmentMapper shipmentMapper;
+    private final TelegramNotificationService telegramNotificationService;
 
     @Transactional
     @Override
@@ -67,6 +69,17 @@ public class ShipmentServiceImpl implements ShipmentService {
         shipment.setOrder(foundOrder);
         shipment.setStatus(IN_TRANSIT);
         Shipment savedShipment = shipmentRepository.save(shipment);
+
+        // Notify client via Telegram
+        User client = foundOrder.getCustomer();
+        if (client != null && client.getTelegramChatId() != null) {
+            String courierName = courier.getUser().getFirstName() + " " + courier.getUser().getLastName();
+            telegramNotificationService.notifyOrderAccepted(
+                    client.getTelegramChatId(),
+                    savedShipment.getTrackingNumber(),
+                    courierName
+            );
+        }
 
         return shipmentMapper.toShipmentDto(savedShipment);
     }

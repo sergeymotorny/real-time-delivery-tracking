@@ -152,6 +152,17 @@
                     <div class="mt-5 text-center">
                         <a th:href="@{/orders/courier/form}" class="btn btn-primary btn-lg px-4">Delivery</a>
                     </div>
+
+                    <div class="mt-4 text-center" sec:authorize="hasRole('CLIENT')">
+                        <div class="alert alert-info d-inline-flex align-items-center gap-2 px-4">
+                            <i class="bi bi-telegram fs-5"></i>
+                            <span>Get order status notifications in Telegram —
+                                <a href="https://t.me/gocourier_notify_bot" target="_blank" class="fw-bold">
+                                    @gocourier_notify_bot
+                                </a>
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </main>
 
