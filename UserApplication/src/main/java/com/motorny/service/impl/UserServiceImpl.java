@@ -85,6 +85,7 @@ public class UserServiceImpl implements UserService {
         foundUser.setLastName(userDto.getLastName());
         foundUser.setPhone(userDto.getPhone());
         foundUser.setEmail(userDto.getEmail());
+        foundUser.setTelegramChatId(userDto.getTelegramChatId());
         User updatedUser = userRepository.save(foundUser);
 
         return userMapper.toUserDto(updatedUser);

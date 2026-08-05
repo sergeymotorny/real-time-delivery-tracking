@@ -32,6 +32,10 @@ spring:
 server:
   port: 8081
 
+telegram:
+  bot:
+    token: YOUR_BOT_TOKEN_HERE
+
 #logging:
 #  level:
 #    org.springframework.web: "debug"

@@ -33,5 +33,7 @@ public class UserDto {
     @NotBlank(message = "Email cannot be blank")
     @Email(message = "Incorrect mail format!")
     private String email;
+
+    private String telegramChatId;
 }
 

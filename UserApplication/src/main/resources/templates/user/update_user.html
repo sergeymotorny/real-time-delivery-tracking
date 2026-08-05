@@ -44,6 +44,19 @@
                             <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></span>
                         </div>
 
+                        <div class="form-group col-md-8">
+                            <label for="telegramChatId" class="col-form-label">
+                                <i class="bi bi-telegram"></i> Telegram Chat ID
+                            </label>
+                            <input type="text" th:field="*{telegramChatId}" class="form-control"
+                                   id="telegramChatId" placeholder="e.g. 123456789">
+                            <small class="text-muted">
+                                To get your Chat ID: open Telegram → write to
+                                <a href="https://t.me/userinfobot" target="_blank">@userinfobot</a>
+                                → copy the number from the reply.
+                            </small>
+                        </div>
+
                         <div class="form-group col-md-8 my-3">
                             <button type="submit" class="btn btn-primary">Update profile</button>
                         </div>
