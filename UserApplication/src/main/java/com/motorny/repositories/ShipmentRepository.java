@@ -14,4 +14,5 @@ public interface ShipmentRepository extends JpaRepository<Shipment, Long> {
     Optional<Shipment> findByOrderId(Long orderId);
     long countByCourierAndStatus(Courier courier, ShipmentStatus status);
     List<Shipment> findByCourier(Courier courier);
+    long countByCourier(Courier courier);
 }
