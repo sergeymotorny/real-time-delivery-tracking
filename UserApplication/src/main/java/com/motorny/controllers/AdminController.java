@@ -1,5 +1,6 @@
 package com.motorny.controllers;
 
+import com.motorny.service.AnalyticsService;
 import com.motorny.service.AssignmentService;
 import com.motorny.service.OrderService;
 import com.motorny.service.PriorityService;
@@ -21,10 +22,17 @@ public class AdminController {
     private final UserService userService;
     private final AssignmentService assignmentService;
     private final PriorityService priorityService;
+    private final AnalyticsService analyticsService;
 
     @GetMapping("/profile")
     public String getAdminProfile() {
         return "user/profile";
+    }
+
+    @GetMapping("/analytics")
+    public String getAnalytics(Model model) {
+        model.addAttribute("analytics", analyticsService.getAnalytics());
+        return "admin/analytics";
     }
 
     @GetMapping("/orders")

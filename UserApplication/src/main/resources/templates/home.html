@@ -75,6 +75,12 @@
                         <div sec:authorize="hasRole('ADMIN')">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
+                                    <a class="nav-link d-flex align-items-center gap-2" th:href="@{/admin/analytics}">
+                                        <i class="bi bi-bar-chart-line"></i>
+                                        Analytics
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link d-flex align-items-center gap-2" th:href="@{/admin/orders}">
                                         <i class="bi bi-box2-heart"></i>
                                         View all delivery requests
