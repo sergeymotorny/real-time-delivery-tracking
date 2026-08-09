@@ -7,6 +7,7 @@ import com.motorny.models.Shipment;
 import com.motorny.models.enums.DeliveryType;
 import com.motorny.models.enums.OrderStatus;
 import com.motorny.repositories.CourierRepository;
+import com.motorny.repositories.FeedbackRepository;
 import com.motorny.repositories.OrderRepository;
 import com.motorny.repositories.ShipmentRepository;
 import com.motorny.service.AnalyticsService;
@@ -31,6 +32,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     private final ShipmentRepository shipmentRepository;
     private final CourierRepository courierRepository;
     private final PriorityService priorityService;
+    private final FeedbackRepository feedbackRepository;
 
     @Override
     public AnalyticsDto getAnalytics() {
@@ -49,6 +51,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
                 .ordersPerDay(buildOrdersPerDay())
                 .topCourierNames(buildTopCourierNames(allCouriers))
                 .topCourierCounts(buildTopCourierCounts(allCouriers))
+                .courierRatings(buildCourierRatings(allCouriers))
                 .build();
     }
 
@@ -159,5 +162,15 @@ public class AnalyticsServiceImpl implements AnalyticsService {
                         c -> -shipmentRepository.countByCourier(c)))
                 .map(c -> shipmentRepository.countByCourier(c))
                 .collect(Collectors.toList());
+    }
+
+    private Map<String, Double> buildCourierRatings(List<Courier> couriers) {
+        Map<String, Double> result = new LinkedHashMap<>();
+        for (Courier courier : couriers) {
+            String name = courier.getUser().getFirstName() + " " + courier.getUser().getLastName();
+            double avg = feedbackRepository.getAverageRatingByCourierId(courier.getId());
+            result.put(name, Math.round(avg * 10.0) / 10.0);
+        }
+        return result;
     }
 }

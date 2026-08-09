@@ -39,4 +39,8 @@ public class AnalyticsDto {
     // --- Top couriers by completed shipments ---
     private List<String> topCourierNames;
     private List<Long> topCourierCounts;
+
+    // --- Average courier ratings ---
+    // key: "FirstName LastName", value: average rating (0.0–5.0)
+    private Map<String, Double> courierRatings;
 }

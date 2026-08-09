@@ -92,6 +92,18 @@
             </div>
         </div>
     </div>
+
+    <!-- Charts row 3 -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header fw-light">Courier average rating (0–5)</div>
+                <div class="card-body">
+                    <canvas id="courierRatingChart" height="100"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Pass data from Thymeleaf to JS -->
@@ -107,6 +119,9 @@
 
     const priorityLabels      = /*[[${analytics.ordersByPriority.keySet()}]]*/ [];
     const priorityValues      = /*[[${analytics.ordersByPriority.values()}]]*/ [];
+
+    const ratingNames         = /*[[${analytics.courierRatings.keySet()}]]*/ [];
+    const ratingValues        = /*[[${analytics.courierRatings.values()}]]*/ [];
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
@@ -168,6 +183,23 @@
         options: {
             maintainAspectRatio: false,
             plugins: { legend: { position: 'bottom' } }
+        }
+    });
+
+    // Courier ratings — Bar
+    new Chart(document.getElementById('courierRatingChart'), {
+        type: 'bar',
+        data: {
+            labels: ratingNames,
+            datasets: [{
+                label: 'Avg rating',
+                data: ratingValues,
+                backgroundColor: '#ffc107'
+            }]
+        },
+        options: {
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true, max: 5, ticks: { stepSize: 1 } } }
         }
     });
 </script>
