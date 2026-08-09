@@ -10,6 +10,7 @@ import com.motorny.models.Shipment;
 import com.motorny.models.enums.OrderStatus;
 import com.motorny.models.enums.ShipmentStatus;
 import com.motorny.repositories.CourierRepository;
+import com.motorny.repositories.FeedbackRepository;
 import com.motorny.repositories.OrderRepository;
 import com.motorny.repositories.ShipmentRepository;
 import com.motorny.service.AssignmentService;
@@ -28,16 +29,18 @@ import java.util.List;
 public class AssignmentServiceImpl implements AssignmentService {
 
     // Weight coefficients for the cost function
-    // cost(courier, order) = α · distance + β · workload + γ · (1/priority)
+    // cost(courier, order) = α · distance + β · workload + γ · (1/priority) - δ · rating
     private static final double ALPHA = 0.5;  // distance weight
     private static final double BETA  = 0.3;  // workload weight
     private static final double GAMMA = 0.2;  // priority weight
+    private static final double DELTA = 0.1;  // rating bonus (subtracted — higher rating = lower cost)
 
     private final OrderRepository orderRepository;
     private final CourierRepository courierRepository;
     private final ShipmentRepository shipmentRepository;
     private final ShipmentMapper shipmentMapper;
     private final PriorityService priorityService;
+    private final FeedbackRepository feedbackRepository;
 
     @Transactional
     @Override
@@ -93,11 +96,13 @@ public class AssignmentServiceImpl implements AssignmentService {
         double distance = calculateDistance(courier, order);
         double workload = getWorkload(courier);
         double priority = getPriority(order);
+        double rating = feedbackRepository.getAverageRatingByCourierId(courier.getId());
 
-        double cost = ALPHA * distance + BETA * workload + GAMMA * (1.0 / priority);
+        // Higher rating reduces cost (courier with better rating gets preference)
+        double cost = ALPHA * distance + BETA * workload + GAMMA * (1.0 / priority) - DELTA * rating;
 
-        log.debug("Courier {}: distance={}, workload={}, priority={}, cost={}",
-                courier.getId(), distance, workload, priority, cost);
+        log.debug("Courier {}: distance={}, workload={}, priority={}, rating={}, cost={}",
+                courier.getId(), distance, workload, priority, rating, cost);
 
         return cost;
     }

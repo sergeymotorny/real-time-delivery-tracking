@@ -80,6 +80,11 @@
                                        class="btn btn-sm btn-outline-danger" title="Delete">
                                         <i class="bi bi-trash"></i>
                                     </a>
+                                    <a th:if="${order.shipment != null}"
+                                       th:href="@{/shipments/{id}/feedback(id=${order.shipment.id})}"
+                                       class="btn btn-sm btn-outline-info" title="Rate delivery">
+                                        <i class="bi bi-star-half"></i>
+                                    </a>
                                 </div>
                             </td>
                         </tr>
