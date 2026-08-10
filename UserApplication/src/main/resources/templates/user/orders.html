@@ -75,11 +75,16 @@
                                        class="btn btn-sm btn-outline-warning" title="Edit">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
-                                    <a th:if="${order.status.name() == 'CREATED'}"
-                                       th:href="@{/orders/delete/{id}(id=${order.id})}"
-                                       class="btn btn-sm btn-outline-danger" title="Delete">
-                                        <i class="bi bi-trash"></i>
-                                    </a>
+                                    <form th:if="${order.status.name() == 'CREATED'}"
+                                          th:action="@{/orders/cancel/{id}(id=${order.id})}"
+                                          method="post" class="d-inline">
+                                        <button type="submit"
+                                                class="btn btn-sm btn-outline-danger"
+                                                title="Cancel order"
+                                                onclick="return confirm('Cancel this order?')">
+                                            <i class="bi bi-x-circle"></i>
+                                        </button>
+                                    </form>
                                     <a th:if="${order.shipment != null}"
                                        th:href="@{/shipments/{id}/feedback(id=${order.shipment.id})}"
                                        class="btn btn-sm btn-outline-info" title="Rate delivery">

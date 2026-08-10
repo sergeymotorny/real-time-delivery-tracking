@@ -11,6 +11,7 @@ import com.motorny.models.Order;
 import com.motorny.models.Shipment;
 import com.motorny.models.User;
 import com.motorny.models.enums.OrderStatus;
+import com.motorny.models.enums.ShipmentStatus;
 import com.motorny.repositories.CourierRepository;
 import com.motorny.repositories.OrderRepository;
 import com.motorny.repositories.ShipmentRepository;
@@ -114,5 +115,23 @@ public class ShipmentServiceImpl implements ShipmentService {
         return shipmentRepository.findByCourier(courier).stream()
                 .map(shipmentMapper::toShipmentDto)
                 .toList();
+    }
+
+    @Override
+    public void markAsDelivered(Long shipmentId, UserDetails userDetails) {
+        Shipment shipment = shipmentRepository.findById(shipmentId)
+                .orElseThrow(() -> new ShipmentNotFoundException("Shipment not found: " + shipmentId));
+
+        User user = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        Courier courier = courierRepository.findByUser(user)
+                .orElseThrow(() -> new CourierNotFoundException("Courier not found"));
+
+        if (!shipment.getCourier().getId().equals(courier.getId())) {
+            throw new IllegalStateException("Only the assigned courier can mark this shipment as delivered");
+        }
+
+        shipment.setStatus(ShipmentStatus.DELIVERED);
+        shipmentRepository.save(shipment);
     }
 }

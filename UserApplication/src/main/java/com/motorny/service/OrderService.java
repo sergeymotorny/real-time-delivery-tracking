@@ -16,4 +16,5 @@ public interface OrderService {
     OrderDto findOrderById(Long id);
     OrderDto getOrderForEditing(Long id, UserDetails userDetails);
     boolean updateOrder(OrderDto orderDto, UserDetails userDetails);
+    void cancelOrder(Long id, UserDetails userDetails);
 }

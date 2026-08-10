@@ -37,6 +37,13 @@ public class OrderController {
         return "redirect:/home";
     }
 
+    @PostMapping("/cancel/{id}")
+    public String cancelOrder(@PathVariable Long id,
+                              @AuthenticationPrincipal UserDetails userDetails) {
+        orderService.cancelOrder(id, userDetails);
+        return "redirect:/users/orders";
+    }
+
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable("id") Long id,
                                Model model,

@@ -44,6 +44,13 @@ public class CourierController {
         return "courier/route";
     }
 
+    @PostMapping("/shipments/{id}/deliver")
+    public String markDelivered(@PathVariable Long id,
+                                @AuthenticationPrincipal UserDetails userDetails) {
+        shipmentService.markAsDelivered(id, userDetails);
+        return "redirect:/couriers/my-shipments";
+    }
+
     @GetMapping("/orders/{id}")
     public String getOrderById(@PathVariable("id") Long id, Model model) {
         model.addAttribute("order", orderService.getOrderById(id));

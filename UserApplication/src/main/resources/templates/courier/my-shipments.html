@@ -38,6 +38,7 @@
                     <th>Status</th>
                     <th>Accepted at</th>
                     <th>Map</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -58,6 +59,20 @@
                            class="btn btn-sm btn-outline-primary">
                             <i class="bi bi-geo-alt"></i>
                         </a>
+                    </td>
+                    <td>
+                        <form th:if="${shipment.status?.name() == 'IN_TRANSIT'}"
+                              th:action="@{/couriers/shipments/{id}/deliver(id=${shipment.id})}"
+                              method="post">
+                            <button type="submit" class="btn btn-sm btn-success"
+                                    onclick="return confirm('Mark this order as delivered?')">
+                                <i class="bi bi-check2-circle"></i> Delivered
+                            </button>
+                        </form>
+                        <span th:if="${shipment.status?.name() == 'DELIVERED'}"
+                              class="badge bg-success">
+                            <i class="bi bi-check-circle"></i> Delivered
+                        </span>
                     </td>
                 </tr>
                 </tbody>

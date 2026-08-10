@@ -90,6 +90,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public void cancelOrder(Long id, UserDetails userDetails) {
+        Order order = orderRepository.findByIdAndCustomerEmail(id, userDetails.getUsername())
+                .orElseThrow(() -> new OrderNotFoundException("Order not found: " + id));
+
+        if (order.getStatus() != OrderStatus.CREATED) {
+            throw new IllegalStateException("Only orders with CREATED status can be cancelled");
+        }
+
+        order.setStatus(OrderStatus.CANCELED);
+        orderRepository.save(order);
+    }
+
+    @Override
     public boolean updateOrder(OrderDto orderDto, UserDetails userDetails) {
         Optional<Order> optional =
                 orderRepository.findByIdAndCustomerEmail(orderDto.getId(), userDetails.getUsername());

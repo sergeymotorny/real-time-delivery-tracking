@@ -11,4 +11,5 @@ public interface ShipmentService {
     ShipmentDto getById(Long id);
     ShipmentDto findByOrderId(Long orderId);
     List<ShipmentDto> getShipmentsByCourier(UserDetails userDetails);
+    void markAsDelivered(Long shipmentId, UserDetails userDetails);
 }
