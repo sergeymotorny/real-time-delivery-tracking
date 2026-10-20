@@ -26,4 +26,5 @@ public class ShipmentDto {
     private String receiverFullName;
     private String receiverAddress;
     private String receiverPhone;
+    private LocalDateTime estimatedDelivery;
 }

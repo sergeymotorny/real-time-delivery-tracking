@@ -13,6 +13,7 @@ public interface ShipmentMapper {
     @Mapping(target = "receiverFullName", source = "order.receiverFullName")
     @Mapping(target = "receiverAddress", source = "order.receiverAddress")
     @Mapping(target = "receiverPhone", source = "order.receiverPhone")
+    @Mapping(target = "estimatedDelivery", source = "order.estimatedDelivery")
     ShipmentDto toShipmentDto(Shipment shipment);
 
     Shipment toShipment(ShipmentDto shipmentDto);
