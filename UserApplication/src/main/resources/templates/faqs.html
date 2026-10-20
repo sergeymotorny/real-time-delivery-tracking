@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 </head>
 <body>
+<header th:insert="~{blocks/header :: header}"></header>
+
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
     <h2 class="fw-bold mb-4">Frequently Asked Questions</h2>
 
@@ -53,5 +55,7 @@
         </div>
     </div>
 </main>
+
+<div th:insert="~{blocks/footer :: footer}"></div>
 </body>
 </html>

@@ -9,38 +9,41 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 </head>
 <body>
-<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-  <h2 class="fw-bold mb-4">About GoCourier</h2>
+  <header th:insert="~{blocks/header :: header}"></header>
 
-  <p class="fs-5 text-muted">
-    GoCourier is a modern delivery service that combines technology and customer care. Our goal is to make the process of sending and receiving parcels as simple, fast and transparent as possible.
-  </p>
+  <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+    <h2 class="fw-bold mb-4">About GoCourier</h2>
 
-  <div class="row mt-4">
-    <div class="col-md-6">
-      <h5>What we offer:</h5>
-      <ul class="list-unstyled">
-        <li>✔ Courier delivery around the city for now!</li>
-        <li>✔ Convenient online interface for checkout</li>
-        <li>✔ Reliable customer support</li>
-      </ul>
+    <p class="fs-5 text-muted">
+      GoCourier is a modern delivery service that combines technology and customer care. Our goal is to make the process of sending and receiving parcels as simple, fast and transparent as possible.
+    </p>
+
+    <div class="row mt-4">
+      <div class="col-md-6">
+        <h5>What we offer:</h5>
+        <ul class="list-unstyled">
+          <li>✔ Courier delivery around the city for now!</li>
+          <li>✔ Convenient online interface for checkout</li>
+          <li>✔ Reliable customer support</li>
+        </ul>
+      </div>
+
+      <div class="col-md-6">
+        <h5>Why choose us:</h5>
+        <ul class="list-unstyled">
+          <li>✔ Transparent terms and tracking</li>
+          <li>✔ Affordable prices</li>
+          <li>✔ Every parcel is taken care of</li>
+        </ul>
+      </div>
     </div>
 
-    <div class="col-md-6">
-      <h5>Why choose us:</h5>
-      <ul class="list-unstyled">
-        <li>✔ Transparent terms and tracking</li>
-        <li>✔ Affordable prices</li>
-        <li>✔ Every parcel is taken care of</li>
-      </ul>
+    <div class="mt-4">
+      <p>We believe that shipping should be as convenient as ordering. That's why every day we're working to improve our service.</p>
+      <p>Thank you for choosing GoCourier!</p>
     </div>
-  </div>
+  </main>
 
-  <div class="mt-4">
-    <p>We believe that shipping should be as convenient as ordering. That's why every day we're working to improve our service.</p>
-    <p>Thank you for choosing GoCourier!</p>
-  </div>
-</main>
-
+  <div th:insert="~{blocks/footer :: footer}"></div>
 </body>
 </html>
