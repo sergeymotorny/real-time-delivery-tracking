@@ -37,6 +37,7 @@
                     <th>Phone</th>
                     <th>Status</th>
                     <th>Accepted at</th>
+                    <th>Est. Delivery</th>
                     <th>Map</th>
                     <th>Action</th>
                 </tr>
@@ -54,6 +55,7 @@
                         </span>
                     </td>
                     <td th:text="${#temporals.format(shipment.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+                    <td th:text="${shipment.estimatedDelivery != null ? #temporals.format(shipment.estimatedDelivery, 'yyyy-MM-dd HH:mm') : '—'}"></td>
                     <td>
                         <a th:href="@{/map/courier/{id}(id=${shipment.orderId})}"
                            class="btn btn-sm btn-outline-primary">

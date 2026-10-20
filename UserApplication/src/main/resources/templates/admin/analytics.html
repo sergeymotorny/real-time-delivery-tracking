@@ -31,19 +31,19 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-bg-warning border-0 shadow-sm">
+            <div class="card border-0 shadow-sm" style="background-color: #e6a800;">
                 <div class="card-body">
-                    <div class="fs-2 fw-bold" th:text="${analytics.pendingOrders}"></div>
-                    <div class="text-white-50">Pending</div>
+                    <div class="fs-2 fw-bold text-white" th:text="${analytics.pendingOrders}"></div>
+                    <div class="text-white">Pending</div>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-bg-info border-0 shadow-sm">
+            <div class="card border-0 shadow-sm" style="background-color: #0891b2;">
                 <div class="card-body">
-                    <div class="fs-2 fw-bold"
+                    <div class="fs-2 fw-bold text-white"
                          th:text="${#numbers.formatDecimal(analytics.avgDeliveryHours, 1, 1)} + ' h'"></div>
-                    <div class="text-white-50">Avg. acceptance time</div>
+                    <div class="text-white">Avg. acceptance time</div>
                 </div>
             </div>
         </div>
