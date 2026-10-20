@@ -10,6 +10,7 @@ import com.motorny.repositories.CourierRepository;
 import com.motorny.repositories.ShipmentRepository;
 import com.motorny.repositories.UserRepository;
 import com.motorny.service.RouteOptimizerService;
+import com.motorny.models.enums.ShipmentStatus;
 import com.motorny.util.GeoUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,7 +52,7 @@ public class RouteOptimizerServiceImpl implements RouteOptimizerService {
         Courier courier = courierRepository.findByUser(user)
                 .orElseThrow(() -> new CourierNotFoundException("Courier not found for user: " + user.getId()));
 
-        List<Shipment> shipments = shipmentRepository.findByCourier(courier);
+        List<Shipment> shipments = shipmentRepository.findByCourierAndStatus(courier, ShipmentStatus.IN_TRANSIT);
 
         // Filter only shipments that have valid coordinates
         List<Shipment> routable = shipments.stream()
