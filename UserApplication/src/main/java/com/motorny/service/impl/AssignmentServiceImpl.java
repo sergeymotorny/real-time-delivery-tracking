@@ -45,6 +45,8 @@ public class AssignmentServiceImpl implements AssignmentService {
     @Transactional
     @Override
     public ShipmentDto assignCourierToOrder(Long orderId) {
+        long start = System.currentTimeMillis();
+
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException("Order not found: " + orderId));
 
@@ -79,6 +81,8 @@ public class AssignmentServiceImpl implements AssignmentService {
         orderRepository.save(order);
 
         Shipment saved = shipmentRepository.save(shipment);
+        log.info("Assignment time: {}ms, couriers checked: {}", System.currentTimeMillis() - start, availableCouriers.size());
+
         return shipmentMapper.toShipmentDto(saved);
     }
 
@@ -101,8 +105,9 @@ public class AssignmentServiceImpl implements AssignmentService {
         // Higher rating reduces cost (courier with better rating gets preference)
         double cost = ALPHA * distance + BETA * workload + GAMMA * (1.0 / priority) - DELTA * rating;
 
-        log.debug("Courier {}: distance={}, workload={}, priority={}, rating={}, cost={}",
-                courier.getId(), distance, workload, priority, rating, cost);
+        log.debug("Courier {} ({}): distance={}, workload={}, priority={}, rating={}, cost={}",
+                courier.getId(), courier.getUser().getFirstName() + " " + courier.getUser().getLastName(),
+                distance, workload, priority, rating, cost);
 
         return cost;
     }
